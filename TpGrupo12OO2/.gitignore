@@ -1,1 +1,25 @@
-/bin/
+# === Eclipse ===
+.classpath
+.project
+.settings/
+bin/
+
+# === IntelliJ IDEA (por si alguien del grupo usa IntelliJ) ===
+.idea/
+*.iml
+*.iws
+out/
+
+# === VS Code ===
+.vscode/
+
+# === Compilados / logs ===
+*.class
+*.log
+hs_err_pid*
+
+# === Sistema operativo ===
+.DS_Store
+Thumbs.db
+
+src/main/resources/hibernate.cfg.xml
