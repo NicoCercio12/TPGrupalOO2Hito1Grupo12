@@ -97,7 +97,7 @@ public class EmpleadoDao {
 
 	// Trae Empleado por id
 
-	public Empleado traer(int idEmpleado) {
+	public Empleado traer(long idEmpleado) {
 
 		Empleado objeto = null;
 
@@ -112,6 +112,27 @@ public class EmpleadoDao {
 			session.close();
 		}
 
+		return objeto;
+	}
+	
+	public Empleado traerPorDni(String dni) {
+		
+		Empleado objeto = null;
+		
+		try {
+			
+			iniciaOperacion();
+			objeto = (Empleado) session.createQuery("from Empleado e where e.dni=:dni").setParameter("dni", dni).uniqueResult();
+			
+		} catch (HibernateException he) {
+			
+			manejaExcepcion(he);
+			
+		} finally {
+			
+			session.close();
+		}
+		
 		return objeto;
 	}
 

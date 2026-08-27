@@ -8,7 +8,7 @@
 		<property column="nombre" name="nombre" type="string" />
 		<property column="apellido" name="apellido" type="string" />
 		<property column="dni" name="dni" type="string" unique="true" />
-		<property column="fechaDeNacimiento" name="fechaDeNacimiento"
+		<property column="fechaNacimiento" name="fechaNacimiento"
 			type="java.time.LocalDate" />
 		<property column="fechaIngreso" name="fechaIngreso"
 			type="java.time.LocalDate"></property>
