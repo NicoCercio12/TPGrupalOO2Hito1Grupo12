@@ -9,7 +9,7 @@
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/db_grupo12?serverTimezone=UTC</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">100123</property>
+        <property name="connection.password">TU_CONTRASEÑA</property>
 
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
