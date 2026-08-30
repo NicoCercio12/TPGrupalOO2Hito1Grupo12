@@ -21,22 +21,23 @@ public class EmpleadoABM {
 		return instancia;
 	}
 
-	public int agregarCocinero(String nombre, String apellido, String dni, LocalDate fechaNacimiento,
+	public long agregarCocinero(String nombre, String apellido, String dni, LocalDate fechaNacimiento,
 			LocalDate fechaIngreso, double sueldoBase, String especialidadCulinaria, double plusCategoria)
 			throws Exception {
 
 		if (EmpleadoDao.getInstance().traerPorDni(dni) != null) {
 
-			throw new Exception("ERROR: Ya existe un cliente con ese dni");
+			throw new Exception("ERROR: Ya existe un empleado con ese dni");
 		}
 
 		Cocinero c = new Cocinero(nombre, apellido, dni, fechaNacimiento, fechaIngreso, sueldoBase,
 				especialidadCulinaria, plusCategoria);
+		
 
 		return EmpleadoDao.getInstance().agregar(c);
 	}
 
-	public int agregarCajero(String nombre, String apellido, String dni, LocalDate fechaNacimiento,
+	public long agregarCajero(String nombre, String apellido, String dni, LocalDate fechaNacimiento,
 			LocalDate fechaIngreso, double sueldoBase, String turno) throws Exception {
 
 		if (EmpleadoDao.getInstance().traerPorDni(dni) != null) {
@@ -45,12 +46,40 @@ public class EmpleadoABM {
 		}
 
 		Cajero c = new Cajero(nombre, apellido, dni, fechaNacimiento, fechaIngreso, sueldoBase, turno);
-
+		
+		
 		return EmpleadoDao.getInstance().agregar(c);
 
 	}
+	
+	
+	public void modificar(Empleado empleado) throws Exception{
+		
+		Empleado empleModificar = EmpleadoDao.getInstance().traer(empleado.getIdEmpleado());
+		
+		if(empleModificar == null) {
+			
+			throw new Exception("ERROR: El empleado no existe");
+		}
+		
+		
+		EmpleadoDao.getInstance().actualizar(empleado);
+		
+	}
+	
+	public void eliminar(Empleado empleado) throws Exception {
+		
+		Empleado empleEliminar = EmpleadoDao.getInstance().traer(empleado.getIdEmpleado());
+		
+		if(empleEliminar == null) {
+			
+			throw new Exception("ERROR: El empleado no existe");
+		}
+		
+		EmpleadoDao.getInstance().eliminar(empleEliminar);
+	}
 
-	public Empleado traer(int idEmpleado) {
+	public Empleado traer(long idEmpleado) {
 		return EmpleadoDao.getInstance().traer(idEmpleado);
 	}
 

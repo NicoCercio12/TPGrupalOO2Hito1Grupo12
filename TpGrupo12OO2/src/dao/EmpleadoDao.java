@@ -5,6 +5,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import datos.Cajero;
+import datos.Cocinero;
 import datos.Empleado;
 
 public class EmpleadoDao {
@@ -34,9 +36,9 @@ public class EmpleadoDao {
 
 	// Agregar (no es necesario realmente)
 
-	public int agregar(Empleado objeto) {
+	public long agregar(Empleado objeto) {
 
-		int id = 0;
+		long id = 0;
 
 		try {
 
@@ -75,9 +77,8 @@ public class EmpleadoDao {
 		}
 	}
 
-	
-	//Eliminar
-	
+	// Eliminar
+
 	public void eliminar(Empleado objeto) {
 
 		try {
@@ -107,6 +108,10 @@ public class EmpleadoDao {
 			objeto = (Empleado) session.createQuery("from Empleado e where e.idEmpleado=:idEmpleado")
 					.setParameter("idEmpleado", idEmpleado).uniqueResult();
 
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
 		} finally {
 
 			session.close();
@@ -114,31 +119,32 @@ public class EmpleadoDao {
 
 		return objeto;
 	}
-	
+
 	public Empleado traerPorDni(String dni) {
-		
+
 		Empleado objeto = null;
-		
+
 		try {
-			
+
 			iniciaOperacion();
-			objeto = (Empleado) session.createQuery("from Empleado e where e.dni=:dni").setParameter("dni", dni).uniqueResult();
-			
+			objeto = (Empleado) session.createQuery("from Empleado e where e.dni=:dni").setParameter("dni", dni)
+					.uniqueResult();
+
 		} catch (HibernateException he) {
-			
+
 			manejaExcepcion(he);
-			
+
 		} finally {
-			
+
 			session.close();
 		}
-		
+
 		return objeto;
 	}
 
 	// Trae la lista de empleados
 
-	public List<Empleado> traer() throws HibernateException {
+	public List<Empleado> traer() {
 
 		List<Empleado> lista = null;
 
@@ -147,9 +153,60 @@ public class EmpleadoDao {
 			iniciaOperacion();
 			lista = session.createQuery("from Empleado", Empleado.class).list();
 
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
 		} finally {
 
 			session.close();
+		}
+
+		return lista;
+	}
+
+	// Trae la lista de cocineros
+
+	public List<Cocinero> traerCocineros() {
+
+		List<Cocinero> lista = null;
+
+		try {
+
+			iniciaOperacion();
+			lista = session.createQuery("from Cocinero", Cocinero.class).list();
+
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
+		} finally {
+
+			session.close();
+		}
+
+		return lista;
+	}
+
+	// Trae la lista de cajeros
+
+	public List<Cajero> traerCajeros() {
+
+		List<Cajero> lista = null;
+
+		try {
+
+			iniciaOperacion();
+			lista = session.createQuery("from Cajero", Cajero.class).list();
+
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
+		} finally {
+
+			session.close();
+
 		}
 
 		return lista;

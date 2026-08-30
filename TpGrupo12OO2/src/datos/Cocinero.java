@@ -31,6 +31,12 @@ public class Cocinero extends Empleado {
 	public void setPlusCategoria(double plusCategoria) {
 		this.plusCategoria = plusCategoria;
 	}
+	
+	@Override
+	public double calcularSueldo() {
+		
+		return getSueldoBase() + plusCategoria;
+	}
 
 	@Override
 	public String toString() {

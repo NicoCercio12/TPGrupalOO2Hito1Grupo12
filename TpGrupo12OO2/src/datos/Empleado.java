@@ -2,6 +2,7 @@ package datos;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public abstract class Empleado {
 
@@ -12,16 +13,17 @@ public abstract class Empleado {
 	protected LocalDate fechaNacimiento;
 	protected LocalDate fechaIngreso;
 	protected double sueldoBase;
-	
-	public Empleado() {}
+
+	public Empleado() {
+	}
 
 	public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
 			double sueldoBase) {
 		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.dni = dni;
-		this.fechaNacimiento = fechaNacimiento;
+		setNombre(nombre);
+		setApellido(apellido);
+		setDni(dni);
+		setFechaNacimiento(fechaNacimiento);
 		this.fechaIngreso = fechaIngreso;
 		this.sueldoBase = sueldoBase;
 	}
@@ -39,6 +41,12 @@ public abstract class Empleado {
 	}
 
 	public void setNombre(String nombre) {
+		
+		if(nombre == null || nombre.isBlank()) {
+			
+			throw new IllegalArgumentException("ERROR: El nombre no puede quedar vacio");
+		}
+		
 		this.nombre = nombre;
 	}
 
@@ -47,6 +55,12 @@ public abstract class Empleado {
 	}
 
 	public void setApellido(String apellido) {
+		
+		if(apellido == null || apellido.isBlank()) {
+			
+			throw new IllegalArgumentException("ERROR: el apellido no puede quedar vacio");
+		}
+		
 		this.apellido = apellido;
 	}
 
@@ -55,6 +69,13 @@ public abstract class Empleado {
 	}
 
 	public void setDni(String dni) {
+
+		if (dni == null || dni.isBlank()) {
+
+			throw new IllegalArgumentException("ERROR: El dni no puede estar vacio");
+
+		}
+
 		this.dni = dni;
 	}
 
@@ -63,7 +84,23 @@ public abstract class Empleado {
 	}
 
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		
+		if(fechaNacimiento == null) {
+			
+			throw new IllegalArgumentException("ERROR: la fecha de nacimiento no puede estar vacia");
+		}
+		
+		if(fechaNacimiento.isAfter(LocalDate.now())) {
+			
+			throw new IllegalArgumentException("ERROR: la fecha de nacimiento no puede ser futura");
+		}
+		
 		this.fechaNacimiento = fechaNacimiento;
+		
+		if(!esMayorDeEdad()) {
+			
+			throw new IllegalArgumentException("ERROR: el empleado no puede ser menor de edad");
+		}
 	}
 
 	public LocalDate getFechaIngreso() {
@@ -81,13 +118,32 @@ public abstract class Empleado {
 	public void setSueldoBase(double sueldoBase) {
 		this.sueldoBase = sueldoBase;
 	}
-	
+
 	public int calcularAntiguedad() {
 		return Period.between(fechaIngreso, LocalDate.now()).getYears();
 	}
-	
+
 	public boolean esMayorDeEdad() {
 		return Period.between(fechaNacimiento, LocalDate.now()).getYears() >= 18;
+	}
+	
+	public abstract double calcularSueldo();
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dni);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empleado other = (Empleado) obj;
+		return Objects.equals(dni, other.dni);
 	}
 
 	@Override
@@ -96,7 +152,5 @@ public abstract class Empleado {
 				+ ", fechaNacimiento=" + fechaNacimiento + ", fechaIngreso=" + fechaIngreso + ", sueldoBase="
 				+ sueldoBase + "]";
 	}
-	
-	
-	
+
 }
