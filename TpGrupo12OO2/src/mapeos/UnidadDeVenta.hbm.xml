@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="datos.UnidadDeVenta" table="UnidadDeVenta">
+		<id column="id" name="idUnidad">
+			<generator class="identity" />
+		</id>
+		<property column="nombreComercial" name="nombreComercial" type="string" />
+		<property column="codUnico" name="codUnico" type="string" />
+		<property column="costo" name="costo" type="double" />
+		<property column="superficie" name="superficie" type="double" />
+
+	                   
+		<!--MUCHOS A MUCHOS CON FESTIVAL-->
+		<set table="unidadxfestival" name="eventos" outer-join="true">
+			<key column="idUnidad"/>
+			<many-to-many column="idFestival" class="datos.Festival"/>
+		</set>
+		
+		
+		<!--MUCHOS A MUCHOS CON PLATO-->
+		<set table="platosxunidad" name="platosxunidad" outer-join="true">
+			<key column="idUnidad"/>
+			<many-to-many column="idPlato" class="datos.Plato"/>
+		</set>
+		
+		<!--UNO A MUCHOS CON PEDIDO-->
+		
+		<set name="Pedido" table="pedido" order-by="idPedido asc" inverse="true" lazy="true" fetch="select">
+			<key column="idUnidad" not-null="true" />
+			<one-to-many class="datos.Pedido" />
+		</set>
+		
+		<!--UNO A MUCHOS CON EMPLEADO-->
+		<set name="Empleado" table="empleado" order-by="idEmpleado asc" inverse="true" lazy="true" fetch="select">
+			<key column="idEmpleado" not-null="true" />
+			<one-to-many class="datos.Empleado" />
+		</set> 
+
+ 
+		<joined-subclass name="datos.PuestoDesarmable" table="puestoDesarmable">
+			<key column="idPuesto" />
+			<property column="cantCarpas"
+				name="cantCarpas" type="int" />
+			<property column="tiempoMontajesMinutos" name="tiempoMontajesMinutos" type="int" />
+		</joined-subclass>
+
+		<joined-subclass name="datos.FoodTruck" table="foodTruck">
+			<key column="idFoodTruck" />
+			<property column="patente" name="patente" type="string" />
+			<property column="requiereElectricidad" name="requiereElectricidad" type="string" />
+		</joined-subclass>
+
+
+
+
+	</class>
+</hibernate-mapping>
