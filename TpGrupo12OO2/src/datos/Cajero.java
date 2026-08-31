@@ -21,6 +21,13 @@ public class Cajero extends Empleado {
 	public void setTurno(String turno) {
 		this.turno = turno;
 	}
+	
+
+	@Override
+	public double calcularSueldo() {
+		
+		return getSueldoBase();
+	}
 
 	@Override
 	public String toString() {
