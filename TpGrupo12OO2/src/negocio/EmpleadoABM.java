@@ -7,6 +7,7 @@ import dao.EmpleadoDao;
 import datos.Cajero;
 import datos.Cocinero;
 import datos.Empleado;
+import datos.UnidadDeVenta;
 
 public class EmpleadoABM {
 
@@ -62,6 +63,13 @@ public class EmpleadoABM {
 			throw new Exception("ERROR: El empleado no existe");
 		}
 		
+		empleModificar = EmpleadoDao.getInstance().traerPorDni(empleado.getDni());
+		
+		if(empleModificar != null &&  empleModificar.getIdEmpleado() != empleado.getIdEmpleado()) {
+			
+			throw new Exception("ERROR: Ya existe otro empleado con ese dni");
+		}
+		
 		
 		EmpleadoDao.getInstance().actualizar(empleado);
 		
@@ -85,6 +93,11 @@ public class EmpleadoABM {
 
 	public List<Empleado> traer() {
 		return EmpleadoDao.getInstance().traer();
+	}
+	
+	public List<UnidadDeVenta> traerUnidadesComoResponsable(long idEmpleado) {
+		return EmpleadoDao.getInstance().traerUnidadesComoResponsable(idEmpleado);
+		
 	}
 
 }

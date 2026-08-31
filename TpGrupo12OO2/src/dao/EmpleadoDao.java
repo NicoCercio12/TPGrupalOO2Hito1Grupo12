@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import datos.Cajero;
 import datos.Cocinero;
 import datos.Empleado;
+import datos.UnidadDeVenta;
 
 public class EmpleadoDao {
 
@@ -208,6 +209,30 @@ public class EmpleadoDao {
 
 			session.close();
 
+		}
+
+		return lista;
+	}
+	
+	//Trae la lista de unidades de venta por empleado responsable
+	
+	public List<UnidadDeVenta> traerUnidadesComoResponsable(long idEmpleado) {
+
+		List<UnidadDeVenta> lista = null;
+
+		try {
+
+			iniciaOperacion();
+			lista = session.createQuery("from UnidadDeVenta u where u.responsable.idEmpleado = :idEmpleado",
+					UnidadDeVenta.class).setParameter("idEmpleado", idEmpleado).list();
+
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
+		} finally {
+
+			session.close();
 		}
 
 		return lista;
