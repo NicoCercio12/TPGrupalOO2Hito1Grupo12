@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="datos.Pedido" table="pedido">
+
+		<id name="idPedido" column="idPedido">
+			<generator class="identity"/>
+		</id>
+
+		<property
+			name="fecha"
+			column="fecha"
+			type="java.time.LocalDate"/>
+
+		<many-to-one
+			name="festival"
+			class="datos.Festival"
+			column="idFestival"/>
+
+		<many-to-one
+			name="unidadDeVenta"
+			class="datos.UnidadDeVenta"
+			column="idUnidad"/>
+
+		<set
+			name="items"
+			table="itemPedido"
+			cascade="all-delete-orphan">
+
+			<key column="idPedido"/>
+
+			<composite-element class="datos.ItemPedido">
+
+				<many-to-one
+					name="plato"
+					class="datos.Plato"
+					column="idPlato"/>
+
+				<property
+					name="cantidad"
+					column="cantidad"
+					type="integer"/>
+
+			</composite-element>
+
+		</set>
+
+	</class>
+
+</hibernate-mapping>
