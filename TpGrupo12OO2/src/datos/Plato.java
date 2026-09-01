@@ -1,8 +1,8 @@
 package datos;
 
 public class Plato {
-	private int idPlato;
-	private String nombre;
+    private int idPlato;
+    private String nombre;
     private double precioVenta;
     private double costoProduccion;
 
@@ -47,9 +47,11 @@ public class Plato {
         this.costoProduccion = costoProduccion;
     }
 
+
     @Override
     public String toString() {
         return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioVenta=" + precioVenta
                 + ", costoProduccion=" + costoProduccion + "]";
     }
 }
+
