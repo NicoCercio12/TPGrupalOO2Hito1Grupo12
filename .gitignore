@@ -1,1 +1,25 @@
-/bin/
+# Archivos de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos compilados
+bin/
+*.class
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.swp
+
+# Dependencias (ejemplo: Maven/Gradle)
+target/
+build/
+
+TpGrupo12OO2/src/hibernate.cfg.xml
