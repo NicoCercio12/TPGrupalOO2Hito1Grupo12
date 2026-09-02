@@ -11,17 +11,18 @@ public class UnidadDeVenta {
     private String nombreComercial;
     private String codUnico;
     private Empleado responsable;
-    private Double costo;
-    private Double superficie;
+    private double costo;
+    private double superficie;
     protected Set<Plato>lstPlatos;
     protected Set<Empleado>lstStaff;
     protected Set<Pedido>lstPedidos;
+    
 public UnidadDeVenta() {}
     
-    public UnidadDeVenta(String nombreComercial,Empleado responsable, double superficie,double costo, String codigo ) throws Exception {
+    public UnidadDeVenta(String nombreComercial,Empleado responsable, double superficie,double costo, String codUnico ) throws Exception {
         this.nombreComercial = nombreComercial;
         this.superficie = superficie;
-        this.setCodigo(codigo);
+        this.setCodigo(codUnico);
         this.responsable = responsable;
         this.costo=costo;
     }
@@ -31,7 +32,7 @@ public UnidadDeVenta() {}
 		return idUnidad;
 	}
 
-	public void setIdUnidad(int idUnidad) {
+	public void setIdUnidad(long idUnidad) {
 		this.idUnidad = idUnidad;
 	}
 
@@ -64,30 +65,46 @@ public UnidadDeVenta() {}
 		return costo;
 	}
 
-	public void setCosto(double Costo) {
+	public void setCosto(double costo) {
 		this.costo = costo;
 	}
 	
 	
-	public String getCodigo() {
+	public String getCodUnico() {
 		return codUnico;
 	}
 	
+	public void setCodUnico(String codUnico) throws Exception {
+	    this.setCodigo(codUnico);
+	}
 	
+
 	public Set<Plato> getLstPlatos() {
-		return lstPlatos;
-	}
-	
-	public Set<Pedido> getLstPedidos() {
-		return lstPedidos;
-	}
-	
-	public Set<Empleado> getLstStaff() {
-		return lstStaff;
-	}
+        return lstPlatos;
+    }
+
+    public void setLstPlatos(Set<Plato> lstPlatos) {
+        this.lstPlatos = lstPlatos;
+    }
+
+    public Set<Pedido> getLstPedidos() {
+        return lstPedidos;
+    }
+
+    public void setLstPedidos(Set<Pedido> lstPedidos) {
+        this.lstPedidos = lstPedidos;
+    }
+
+    public Set<Empleado> getLstStaff() {
+        return lstStaff;
+    }
+
+    public void setLstStaff(Set<Empleado> lstStaff) {
+        this.lstStaff = lstStaff;
+    }
 
 	public boolean equals(UnidadDeVenta unidad) {
-		return this.codUnico.equalsIgnoreCase(unidad.getCodigo());
+		return this.codUnico.equalsIgnoreCase(unidad.getCodUnico());
 	}
 	
 	//CONDICION DE CODIGO 10 CARACTERES

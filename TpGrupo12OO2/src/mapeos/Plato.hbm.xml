@@ -1,4 +1,4 @@
-	<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE hibernate-mapping PUBLIC 
 	    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
 	    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
@@ -6,13 +6,13 @@
 	<hibernate-mapping>
 	    <class name="datos.Plato" table="plato">
 	
-	        <id column="idPlato" name="idPlato">
+	        <id name="idPlato" column="idPlato">
 	            <generator class="identity"/>
 	        </id>
 	
-	        <property column="nombre" name="nombre" type="string"/>
-	        <property column="precioVenta" name="precioVenta" type="double"/>
-	        <property column="costoProduccion" name="costoProduccion" type="double"/>
+	        <property name="nombre" column="nombre"  type="string"/>
+	        <property name="precioVenta" column="precioVenta"  type="double"/>
+	        <property name="costoProduccion" column="costoProduccion"  type="double"/>
 	
 	    </class>
 	</hibernate-mapping>

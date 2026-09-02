@@ -4,8 +4,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import java.time.LocalDate;
 import datos.UnidadDeVenta;
+import datos.Empleado;
 
 public class UnidadDeVentaDao {
 
@@ -34,14 +35,14 @@ public class UnidadDeVentaDao {
 
 	//Agregar
 
-	public int agregar(UnidadDeVenta objeto) {
+	public long agregar(UnidadDeVenta objeto) {
 
-		int id = 0;
+		long id = 0;
 
 		try {
 
 			iniciaOperacion();
-			id = Integer.parseInt(session.save(objeto).toString());
+			id = Long.parseLong(session.save(objeto).toString());
 			tx.commit();
 
 		} catch (HibernateException he) {
@@ -57,24 +58,20 @@ public class UnidadDeVentaDao {
 
 	}
 
-	// Actualizar
-
+	/// Actualizar
 	public void actualizar(UnidadDeVenta objeto) {
-
-		try {
-
-			iniciaOperacion();
-			session.update(objeto);
-			tx.commit();
-
-		} catch (HibernateException he) {
-			manejaExcepcion(he);
-
-		} finally {
-			session.close();
-		}
+	    try {
+	        iniciaOperacion();
+	        session.merge(objeto);
+	        tx.commit();
+	    } catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    } finally {
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
 	}
-
 	
 	//Eliminar
 	
@@ -204,5 +201,23 @@ public class UnidadDeVentaDao {
 		return objeto;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Empleado> traerStaffPorIngresoAnterior(long idUnidad, LocalDate fecha) throws HibernateException {
+	    List<Empleado> lista = null;
+	    try {
+	        iniciaOperacion();
+	        String hql = "select e from UnidadDeVenta u join u.lstStaff e where u.idUnidad = :idUnidad and e.fechaIngreso <= :fecha order by e.fechaIngreso asc";
+	        lista = session.createQuery(hql)
+	                       .setParameter("idUnidad", idUnidad)
+	                       .setParameter("fecha", fecha)
+	                       .list();
+	    } catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    } finally {
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+	    return lista;
+	}
 }
