@@ -5,6 +5,7 @@ import java.util.List;
 
 import dao.FestivalDao;
 import datos.Festival;
+import datos.Pedido;
 
 public class FestivalABM {
 
@@ -50,4 +51,10 @@ public class FestivalABM {
     public List<Festival> traer() {
         return FestivalDao.getInstance().traer();
     }
+    
+    public List<Pedido> traerPedidosDelFestival(long idFestival) {
+    	return FestivalDao.getInstance().traerPedidosDelFestival(idFestival);
+    }
+    
+ 
 }

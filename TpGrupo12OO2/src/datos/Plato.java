@@ -1,7 +1,7 @@
 package datos;
 
 public class Plato {
-    private int idPlato;
+    private long idPlato;
     private String nombre;
     private double precioVenta;
     private double costoProduccion;
@@ -15,11 +15,11 @@ public class Plato {
         this.costoProduccion = costoProduccion;
     }
 
-    public int getIdPlato() {
+    public long getIdPlato() {
         return idPlato;
     }
 
-    public void setIdPlato(int idPlato) {
+    public void setIdPlato(long idPlato) {
         this.idPlato = idPlato;
     }
 

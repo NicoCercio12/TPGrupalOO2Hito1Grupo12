@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import datos.Festival;
+import datos.Pedido;
 
 public class FestivalDao {
 
@@ -121,6 +122,28 @@ public class FestivalDao {
         } finally {
             session.close();
         }
+        return lista;
+    }
+    
+    public List<Pedido> traerPedidosDelFestival(long idFestival) {
+
+        List<Pedido> lista = null;
+
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                    "from Pedido p where p.festival.idFestival = :id", Pedido.class)
+                    .setParameter("id", idFestival)
+                    .list();
+            tx.commit();
+
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+
+        } finally {
+            session.close();
+        }
+
         return lista;
     }
 }

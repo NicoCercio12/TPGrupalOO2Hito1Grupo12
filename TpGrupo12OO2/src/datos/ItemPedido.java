@@ -2,6 +2,7 @@ package datos;
 
 public class ItemPedido {
 
+	private long idItemPedido;
 	private Plato plato;
 	private int cantidad;
 
@@ -34,5 +35,13 @@ public class ItemPedido {
 	public String toString() {
 		return "ItemPedido [plato=" + plato
 				+ ", cantidad=" + cantidad + "]";
+	}
+
+	public long getIdItemPedido() {
+		return idItemPedido;
+	}
+
+	public void setIdItemPedido(long idItemPedido) {
+		this.idItemPedido = idItemPedido;
 	}
 }

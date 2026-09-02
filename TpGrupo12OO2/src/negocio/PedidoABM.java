@@ -141,10 +141,9 @@ public class PedidoABM {
 	}
 
 	// Traer Pedido por id
-	public Pedido traer(int idPedido) {
+	public Pedido traer(long idPedido) {
 
-		return PedidoDao.getInstance()
-				.traer(idPedido);
+		return PedidoDao.getInstance().traer(idPedido);
 	}
 
 	// Traer todos los pedidos

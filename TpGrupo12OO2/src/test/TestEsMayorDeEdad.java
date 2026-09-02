@@ -9,7 +9,7 @@ public class TestEsMayorDeEdad {
 
 		//Traigo el empleado existente
 		
-		long idExistente = 6; 
+		long idExistente = 2; 
 
 		Empleado empleado = EmpleadoABM.getInstance().traer(idExistente);
 

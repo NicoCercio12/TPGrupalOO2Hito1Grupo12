@@ -7,8 +7,8 @@ public class TestCalcularSueldo {
 
     public static void main(String[] args) {
 
-        long idCocinero = 6; // ajustá a los ids reales que quedaron en tu base
-        long idCajero = 7;
+        long idCocinero = 1; // ajustá a los ids reales que quedaron en tu base
+        long idCajero = 2;
 
         Empleado e1 = EmpleadoABM.getInstance().traer(idCocinero);
         Empleado e2 = EmpleadoABM.getInstance().traer(idCajero);

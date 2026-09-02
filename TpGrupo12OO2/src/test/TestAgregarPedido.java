@@ -3,6 +3,7 @@ package test;
 import java.time.LocalDate;
 
 import datos.Festival;
+import datos.Pedido;
 import datos.Plato;
 import datos.UnidadDeVenta;
 import negocio.FestivalABM;
@@ -11,40 +12,41 @@ import negocio.UnidadDeVentaABM;
 
 public class TestAgregarPedido {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
+        try {
+            long idFestival = 1; // Festival ya cargado en BD
+            long idUnidad = 1;   // Unidad ya cargada en BD
 
-		try {
+            // Traemos el festival y la unidad con sus platos
+            Festival festival = FestivalABM.getInstance().traer(idFestival);
+            UnidadDeVenta unidad = UnidadDeVentaABM.getInstance().traerUnidadyPlatos(idUnidad);
 
-			long idFestival = 1;
-			long idUnidad = 1;
+            // Validamos que la unidad tenga platos asociados
+            if (unidad.getLstPlatos() == null || unidad.getLstPlatos().isEmpty()) {
+                System.out.println("⚠ La unidad " + idUnidad + " no tiene platos asociados. Inserte al menos uno en la tabla platosxunidad.");
+                return;
+            }
 
-			Festival festival =
-					FestivalABM.getInstance().traer(idFestival);
+            // Tomamos el primer plato disponible
+            Plato plato = unidad.getLstPlatos().iterator().next();
 
-			UnidadDeVenta unidad =
-					UnidadDeVentaABM.getInstance()
-							.traerUnidadyPlatos(idUnidad);
+            // Agregamos el pedido
+            long idPedido = PedidoABM.getInstance().agregar(
+                    LocalDate.now(),
+                    festival,
+                    unidad,
+                    plato,
+                    2 // cantidad
+            );
+            System.out.println("Pedido agregado correctamente. ID: " + idPedido);
 
-			Plato plato =
-					unidad.getLstPlatos()
-							.iterator()
-							.next();
+            // Verificación
+            System.out.println("\n--- Verificación ---");
+            Pedido pedido = PedidoABM.getInstance().traer(idPedido);
+            System.out.println(pedido);
 
-			int idPedido =
-					PedidoABM.getInstance().agregar(
-							LocalDate.now(),
-							festival,
-							unidad,
-							plato,
-							2);
-
-			System.out.println(
-					"Pedido agregado correctamente. ID: "
-					+ idPedido);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

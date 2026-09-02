@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Pedido {
 
-	private int idPedido;
+	private long idPedido;
 	private LocalDate fecha;
 	private Festival festival;
 	private UnidadDeVenta unidadDeVenta;
@@ -24,11 +24,11 @@ public class Pedido {
 		this.items = new HashSet<ItemPedido>();
 	}
 
-	public int getIdPedido() {
+	public long getIdPedido() {
 		return idPedido;
 	}
 
-	public void setIdPedido(int idPedido) {
+	public void setIdPedido(long idPedido) {
 		this.idPedido = idPedido;
 	}
 
@@ -66,10 +66,9 @@ public class Pedido {
 
 	@Override
 	public String toString() {
-		return "Pedido [idPedido=" + idPedido
-				+ ", fecha=" + fecha
-				+ ", festival=" + festival
-				+ ", unidadDeVenta=" + unidadDeVenta
-				+ ", items=" + items + "]";
+	    return "Pedido [idPedido=" + idPedido +
+	           ", fecha=" + fecha +
+	           ", idFestival=" + (festival != null ? festival.getIdFestival() : null) +
+	           ", idUnidad=" + (unidadDeVenta != null ? unidadDeVenta.getIdUnidad() : null) + "]";
 	}
 }

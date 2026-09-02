@@ -109,7 +109,7 @@ public class PedidoDao {
 	}
 
 	// Traer Pedido por id
-	public Pedido traer(int idPedido) {
+	public Pedido traer(long idPedido) {
 
 		Pedido objeto = null;
 
