@@ -23,9 +23,19 @@ public class TestNicolasCerciosimo {
 
             // Traemos las unidades de venta donde ese empleado es responsable
             List<UnidadDeVenta> unidades = UnidadDeVentaABM.getInstance().traerUnidadesComoResponsable(empleado);
+            
+            System.out.println();
+            
+            System.out.println("========================================");
+            System.out.println(" Empleado consultado");
+            System.out.println("========================================");
+            System.out.println(empleado);
+            System.out.println();
 
-            // Verificación
-            System.out.println("\n--- Verificación ---");
+            System.out.println("========================================");
+            System.out.println(" Unidades de venta como responsable");
+            System.out.println("========================================");
+
             if (unidades.isEmpty()) {
                 System.out.println("El empleado " + empleado + " no tiene unidades de venta asignadas como responsable.");
             } else {
@@ -37,5 +47,8 @@ public class TestNicolasCerciosimo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        System.out.println("========================================");
     }
+    
 }
