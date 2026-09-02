@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import datos.Plato;
 
-
 public class PlatoDao {
 
 		private static Session session;
@@ -20,6 +19,7 @@ public class PlatoDao {
 				instancia = new PlatoDao();
 			return instancia;
 		}
+		//comentario
 
 		protected void iniciaOperacion() throws HibernateException {
 			session = HibernateUtil.getSessionFactory().openSession();
