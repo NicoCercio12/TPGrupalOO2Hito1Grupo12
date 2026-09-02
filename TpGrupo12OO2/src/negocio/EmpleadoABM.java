@@ -95,9 +95,6 @@ public class EmpleadoABM {
 		return EmpleadoDao.getInstance().traer();
 	}
 	
-	public List<UnidadDeVenta> traerUnidadesComoResponsable(long idEmpleado) {
-		return EmpleadoDao.getInstance().traerUnidadesComoResponsable(idEmpleado);
-		
-	}
+	
 
 }

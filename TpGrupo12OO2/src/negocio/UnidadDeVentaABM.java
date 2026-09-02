@@ -3,6 +3,7 @@ package negocio;
 import java.time.LocalDate;
 import java.util.List;
 
+import dao.EmpleadoDao;
 import dao.UnidadDeVentaDao;
 import datos.Empleado;
 import datos.FoodTruck;
@@ -86,6 +87,12 @@ public class UnidadDeVentaABM {
 			throw new Exception("ERROR: No existe la Unidad de Venta con ID: " + idUnidad);
 		}
 		return UnidadDeVentaDao.getInstance().traerStaffPorIngresoAnterior(idUnidad, fecha);
+	}
+	
+	//Correccion Nicolás Cerciosimo
+	public List<UnidadDeVenta> traerUnidadesComoResponsable(Empleado empleado) {
+		return UnidadDeVentaDao.getInstance().traerUnidadesComoResponsable(empleado);
+		
 	}
 
 }

@@ -220,4 +220,29 @@ public class UnidadDeVentaDao {
 	    }
 	    return lista;
 	}
+	
+	//Correccion de Nicolás Cerciosimo: Trae la lista de unidades de venta por empleado responsable
+	
+		public List<UnidadDeVenta> traerUnidadesComoResponsable(Empleado empleado) {
+
+			List<UnidadDeVenta> lista = null;
+
+			try {
+
+				iniciaOperacion();
+				lista = session.createQuery("from UnidadDeVenta u where u.responsable = :empleado",
+						UnidadDeVenta.class).setParameter("empleado", empleado).list();
+
+			} catch (HibernateException he) {
+
+				manejaExcepcion(he);
+
+			} finally {
+
+				session.close();
+			}
+
+			return lista;
+		}
+
 }
