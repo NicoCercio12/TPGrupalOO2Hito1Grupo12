@@ -6,7 +6,7 @@ public class Cajero extends Empleado {
 	
 	private String turno;
 
-	public Cajero() {}
+	public Cajero() {super();}
 	
 	public Cajero(String nombre, String apellido, String dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
 			double sueldoBase, String turno) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class name="datos.UnidadDeVenta" table="UnidadDeVenta">
 		<id column="id" name="idUnidad">
@@ -10,49 +11,40 @@
 		<property column="costo" name="costo" type="double" />
 		<property column="superficie" name="superficie" type="double" />
 
-	                   
-		<!--MUCHOS A MUCHOS CON FESTIVAL-->
-		<set table="unidadxfestival" name="eventos" outer-join="true">
-			<key column="idUnidad"/>
-			<many-to-many column="idFestival" class="datos.Festival"/>
-		</set>
-		
-		
-		<!--MUCHOS A MUCHOS CON PLATO-->
-		<set table="platosxunidad" name="platosxunidad" outer-join="true">
+		<!-- RELACIÓN CON EMPLEADO RESPONSABLE -->
+		<many-to-one name="responsable" class="datos.Empleado" column="idResponsable" not-null="false" />
+
+		<!-- MUCHOS A MUCHOS CON PLATO (name coincide con lstPlatos) -->
+		<set table="platosxunidad" name="lstPlatos" outer-join="true" lazy="true">
 			<key column="idUnidad"/>
 			<many-to-many column="idPlato" class="datos.Plato"/>
 		</set>
 		
-		<!--UNO A MUCHOS CON PEDIDO-->
-		
-		<set name="Pedido" table="pedido" order-by="idPedido asc" inverse="true" lazy="true" fetch="select">
+		<!-- UNO A MUCHOS CON PEDIDO (name coincide con lstPedidos) -->
+		<set name="lstPedidos" table="pedido" order-by="idPedido asc" inverse="true" lazy="true" fetch="select">
 			<key column="idUnidad" not-null="true" />
 			<one-to-many class="datos.Pedido" />
 		</set>
 		
-		<!--UNO A MUCHOS CON EMPLEADO-->
-		<set name="Empleado" table="empleado" order-by="idEmpleado asc" inverse="true" lazy="true" fetch="select">
-			<key column="idEmpleado" not-null="true" />
+		<!-- UNO A MUCHOS CON STAFF (name coincide con lstStaff) -->
+		<set name="lstStaff" table="empleado" inverse="true" lazy="true">
+			<key column="idUnidad" />
 			<one-to-many class="datos.Empleado" />
 		</set> 
 
- 
+		<!-- SUBCLASE PuestoDesarmable -->
 		<joined-subclass name="datos.PuestoDesarmable" table="puestoDesarmable">
 			<key column="idPuesto" />
-			<property column="cantCarpas"
-				name="cantCarpas" type="int" />
-			<property column="tiempoMontajesMinutos" name="tiempoMontajesMinutos" type="int" />
+			<property column="cantCarpas" name="cantidadCarpas" type="int" />
+			<property column="tiempoMontajesMinutos" name="tiempoMontajeMinutos" type="int" />
 		</joined-subclass>
 
+		<!-- SUBCLASE FoodTruck -->
 		<joined-subclass name="datos.FoodTruck" table="foodTruck">
 			<key column="idFoodTruck" />
 			<property column="patente" name="patente" type="string" />
-			<property column="requiereElectricidad" name="requiereElectricidad" type="string" />
+			<property column="usaElectricidad" name="usaElectricidad" type="boolean" />
 		</joined-subclass>
-
-
-
 
 	</class>
 </hibernate-mapping>

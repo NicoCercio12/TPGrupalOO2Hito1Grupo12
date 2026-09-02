@@ -14,8 +14,7 @@ public abstract class Empleado {
 	protected LocalDate fechaIngreso;
 	protected double sueldoBase;
 
-	public Empleado() {
-	}
+	public Empleado() {}
 
 	public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
 			double sueldoBase) {

@@ -22,50 +22,70 @@ public class UnidadDeVentaABM {
 		return instancia;
 	}
 
-	public int agregarFoodTruck(String nombreComercial, Empleado responsable,  double superficie, double costo,String codigo,String patente,boolean requiereElecetrcidad)
-			throws Exception {
+	public long agregarFoodTruck(String nombreComercial, Empleado responsable, double superficie, double costo,
+			String codigo, String patente, boolean requiereElecetrcidad) throws Exception {
 
 		if (UnidadDeVentaDao.getInstance().traerPorCodigoUnico(codigo) != null) {
-
 			throw new Exception("ERROR: Ya existe una unidad con ese codigo");
 		}
 
-		FoodTruck f = new FoodTruck( nombreComercial,responsable, superficie,costo,codigo, patente,requiereElecetrcidad);
+		FoodTruck f = new FoodTruck(nombreComercial, responsable, superficie, costo, codigo, patente,
+				requiereElecetrcidad);
 
 		return UnidadDeVentaDao.getInstance().agregar(f);
 	}
 
-	public int agregarPuestoDesarmable(String nombreComercial, Empleado responsable,  double superficie, double costo,String codigo,int cantidadCarpas, int tiempoMontajeMinutos) throws Exception {
+	public long agregarPuestoDesarmable(String nombreComercial, Empleado responsable, double superficie, double costo,
+			String codigo, int cantidadCarpas, int tiempoMontajeMinutos) throws Exception {
 
 		if (UnidadDeVentaDao.getInstance().traerPorCodigoUnico(codigo) != null) {
-
 			throw new Exception("ERROR: Ya existe una unidad con ese codigo");
 		}
 
-		PuestoDesarmable pd = new PuestoDesarmable(nombreComercial,responsable, superficie,costo,codigo, cantidadCarpas, tiempoMontajeMinutos);
+		PuestoDesarmable pd = new PuestoDesarmable(nombreComercial, responsable, superficie, costo, codigo,
+				cantidadCarpas, tiempoMontajeMinutos);
 
 		return UnidadDeVentaDao.getInstance().agregar(pd);
-
 	}
 
-	public UnidadDeVenta traerPorCodigoUnico(int codUnico) {
-		return UnidadDeVentaDao.getInstance().traer(codUnico);
+	public void modificar(UnidadDeVenta unidadDeVenta) throws Exception {
+		if (unidadDeVenta == null) {
+			throw new Exception("ERROR: La unidad de venta no puede ser nula");
+		}
+		if (UnidadDeVentaDao.getInstance().traer(unidadDeVenta.getIdUnidad()) == null) {
+			throw new Exception("ERROR: La unidad de venta no existe");
+		}
+		UnidadDeVentaDao.getInstance().actualizar(unidadDeVenta);
+	}
+
+	public UnidadDeVenta traer(long idUnidad) {
+		return UnidadDeVentaDao.getInstance().traer(idUnidad);
+	}
+
+	public UnidadDeVenta traerPorCodigoUnico(String codigo) {
+		return UnidadDeVentaDao.getInstance().traerPorCodigoUnico(codigo);
 	}
 
 	public List<UnidadDeVenta> traer() {
 		return UnidadDeVentaDao.getInstance().traer();
 	}
 
-	
 	public UnidadDeVenta traerUnidadyPlatos(long idUnidad) {
 		return UnidadDeVentaDao.getInstance().traerUnidadYplatos(idUnidad);
 	}
-	
+
 	public UnidadDeVenta traerUnidadyStaff(long idUnidad) {
 		return UnidadDeVentaDao.getInstance().traerUnidadYstaff(idUnidad);
 	}
-	
-	public UnidadDeVenta traerUnidadyPedidos(long idUnidad) {
-		return UnidadDeVentaDao.getInstance().traerUnidadYPedidos(idUnidad);
+
+	public List<Empleado> traerStaffPorIngresoAnterior(long idUnidad, LocalDate fecha) throws Exception {
+		if (fecha == null) {
+			throw new Exception("ERROR: La fecha no puede ser nula");
+		}
+		if (UnidadDeVentaDao.getInstance().traer(idUnidad) == null) {
+			throw new Exception("ERROR: No existe la Unidad de Venta con ID: " + idUnidad);
+		}
+		return UnidadDeVentaDao.getInstance().traerStaffPorIngresoAnterior(idUnidad, fecha);
 	}
+
 }

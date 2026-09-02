@@ -7,7 +7,7 @@ public class Cocinero extends Empleado {
 	private String especialidadCulinaria;
 	private double plusCategoria;
 	
-	public Cocinero() {}
+	public Cocinero() {super();}
 	
 	public Cocinero(String nombre, String apellido, String dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
 			double sueldoBase, String especialidadCulinaria, double plusCategoria) {

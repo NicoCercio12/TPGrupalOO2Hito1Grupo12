@@ -12,31 +12,21 @@ public class HibernateUtil {
 	private static SessionFactory sessionFactory;
 	
 	public static SessionFactory getSessionFactory() {
+		try {
+			if (sessionFactory == null) {
+				StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+						.configure("hibernate.cfg.xml").build();
 
-	try {
+				Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
 
-		if (sessionFactory == null) {
-
-			StandardServiceRegistry standardRegistry = new
-
-					StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-
-			Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
-
-			sessionFactory = metaData.getSessionFactoryBuilder().build();
-
+				sessionFactory = metaData.getSessionFactoryBuilder().build();
+			}
+		} catch (Throwable he) {
+			System.err.println("ERROR en la inicialización de la SessionFactory: " + he);
+			he.printStackTrace(); // <-- Esto muestra el stacktrace con el 'Caused by'
+			throw new ExceptionInInitializerError(he);
 		}
 
-	} catch (HibernateException he) {
-
-		System.err.println("ERROR en la inicialización de la SessionFactory: " + he);
-
-		throw new ExceptionInInitializerError(he);
-		
+		return sessionFactory;
 	}
-
-	return sessionFactory;
-	
-	}
-
 }
