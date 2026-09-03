@@ -56,5 +56,16 @@ public class FestivalABM {
     	return FestivalDao.getInstance().traerPedidosDelFestival(idFestival);
     }
     
+    // Traer festivales por rango de fechas
+
+    public List<Festival> traerPorRangoFechas(LocalDate inicio, LocalDate fin) {
+        return traer().stream()
+                      .filter(f -> !f.getFechaInicio().isBefore(inicio)
+                                && !f.getFechaFin().isAfter(fin))
+                      .toList();
+    }
+
+
+    
  
 }
