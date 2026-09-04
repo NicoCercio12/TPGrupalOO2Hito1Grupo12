@@ -90,6 +90,10 @@ public class EmpleadoABM {
 	public Empleado traer(long idEmpleado) {
 		return EmpleadoDao.getInstance().traer(idEmpleado);
 	}
+	
+	public Empleado traerPorDni(String dni) {
+		return EmpleadoDao.getInstance().traerPorDni(dni);
+	}
 
 	public List<Empleado> traer() {
 		return EmpleadoDao.getInstance().traer();
