@@ -241,5 +241,30 @@ public class PedidoDao {
 	    return cantidad;
 	}
 	
+	//CALCULAR EL VALOR TOTAL DE UN PEDIO
+	//ALUMNO : LUCAS LA ROSA
+	public Double calcularTotalPedidoPorHql(int idPedido) {
+        Double total = 0.0;
+        try {
+            iniciaOperacion();
+            // Navega la coleccion items y accede a la relacion plato para multiplicar y sumar
+            String hql = "select sum(i.cantidad * i.plato.precioVenta) "
+                       + "from Pedido p "
+                       + "join p.items i "
+                       + "where p.idPedido = :idPedido";
+
+            total = (Double) session.createQuery(hql)
+                                    .setParameter("idPedido", idPedido)
+                                    .uniqueResult();
+            tx.commit();
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+        } finally {
+        	if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+        }
+        return total;
+    }
 	
 }

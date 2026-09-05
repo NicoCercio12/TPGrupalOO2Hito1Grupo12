@@ -11,11 +11,13 @@ public class Festival {
     private String temporada;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-
-    // Relación con Pedido
+    protected Set<UnidadDeVenta> lstUnidades;
+   // Relación con Pedido
   //  private Set<Pedido> pedidos = new HashSet<>();
 
-    public Festival() {}
+    public Festival() {		
+    	this.lstUnidades = new HashSet<UnidadDeVenta>();
+    }
 
     public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
         super();
@@ -63,6 +65,15 @@ public class Festival {
 
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
+    }
+    
+    
+    public Set<UnidadDeVenta> getLstUnidades() {
+        return lstUnidades;
+    }
+
+    public void setLstUnidades(Set<UnidadDeVenta> lstUnidades) {
+        this.lstUnidades = lstUnidades;
     }
 
 //    public Set<Pedido> getPedidos() {

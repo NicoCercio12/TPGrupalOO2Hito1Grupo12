@@ -1,12 +1,17 @@
 package datos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Plato {
     private long idPlato;
     private String nombre;
     private double precioVenta;
     private double costoProduccion;
-
-    public Plato() {}
+    protected Set<UnidadDeVenta> lstUnidades;
+    public Plato() {	
+    	this.lstUnidades = new HashSet<UnidadDeVenta>();
+    }
 
     public Plato(String nombre, double precioVenta, double costoProduccion) {
         super();
@@ -46,7 +51,14 @@ public class Plato {
     public void setCostoProduccion(double costoProduccion) {
         this.costoProduccion = costoProduccion;
     }
+    
+    public Set<UnidadDeVenta> getLstUnidades() {
+        return lstUnidades;
+    }
 
+    public void setLstUnidades(Set<UnidadDeVenta> lstUnidades) {
+        this.lstUnidades = lstUnidades;
+    }
 
     @Override
     public String toString() {

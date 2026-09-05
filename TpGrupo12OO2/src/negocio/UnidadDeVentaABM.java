@@ -86,15 +86,7 @@ public class UnidadDeVentaABM {
 		return UnidadDeVentaDao.getInstance().traerUnidadYstaff(idUnidad);
 	}
 
-	public List<Empleado> traerStaffPorIngresoAnterior(long idUnidad, LocalDate fecha) throws Exception {
-		if (fecha == null) {
-			throw new Exception("ERROR: La fecha no puede ser nula");
-		}
-		if (UnidadDeVentaDao.getInstance().traer(idUnidad) == null) {
-			throw new Exception("ERROR: No existe la Unidad de Venta con ID: " + idUnidad);
-		}
-		return UnidadDeVentaDao.getInstance().traerStaffPorIngresoAnterior(idUnidad, fecha);
-	}
+
 	
 	//Correccion Nicolás Cerciosimo
 	public List<UnidadDeVenta> traerUnidadesComoResponsable(Empleado empleado) {
