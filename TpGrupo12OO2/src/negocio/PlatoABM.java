@@ -47,4 +47,26 @@ public class PlatoABM {
     public List<Plato> traer() throws Exception {
         return PlatoDao.getInstance().traer();
     }
+    
+ // Traer el plato más vendido de una Unidad de Venta
+    public Plato traerMasVendidoPorUnidad(long idUnidad) throws Exception {
+        return PlatoDao.getInstance().traerMasVendidoPorUnidad(idUnidad);
+    }
+    
+    public void cambiarPrecio(long idPlato, double nuevoPrecio) throws Exception {
+        Plato plato = PlatoDao.getInstance().traer(idPlato);
+
+        if (plato == null) {
+            throw new Exception("No existe un plato con ese ID");
+        }
+
+        plato.setPrecioVenta(nuevoPrecio);
+
+        PlatoDao.getInstance().actualizar(plato);
+    }
+    
+    public Plato traerMasBarato() throws Exception {
+        return PlatoDao.getInstance().traerMasBarato();
+    }
+    
 }

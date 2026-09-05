@@ -169,5 +169,57 @@ public class PlatoDao {
 
 			return lista;
 		}
+		
+		// Traer el plato más vendido de una Unidad de Venta
+		public Plato traerMasVendidoPorUnidad(long idUnidad) {
+
+		    Plato plato = null;
+
+		    try {
+
+		        iniciaOperacion();
+
+		        plato = (Plato) session.createQuery(
+		                "select i.plato " +
+		                "from Pedido p join p.items i " +
+		                "where p.unidadDeVenta.idUnidad = :idUnidad " +
+		                "group by i.plato " +
+		                "order by sum(i.cantidad) desc")
+		                .setParameter("idUnidad", idUnidad)
+		                .setMaxResults(1)
+		                .uniqueResult();
+
+		    } catch (HibernateException he) {
+
+		        manejaExcepcion(he);
+
+		    } finally {
+
+		        session.close();
+		    }
+
+		    return plato;
+		}
+		
+		public Plato traerMasBarato() {
+		    Plato plato = null;
+
+		    try {
+		        iniciaOperacion();
+
+		        plato = (Plato) session.createQuery(
+		                "from Plato p order by p.precioVenta asc")
+		                .setMaxResults(1)
+		                .uniqueResult();
+
+		    } catch (HibernateException he) {
+		        manejaExcepcion(he);
+		    } finally {
+		        session.close();
+		    }
+
+		    return plato;
+		}
+		
 
 }

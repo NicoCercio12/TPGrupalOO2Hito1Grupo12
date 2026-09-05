@@ -9,9 +9,9 @@ public class TestAgregarPlato {
         try {
             // Caso: agregar un Plato
             int idPlato = PlatoABM.getInstance().agregar(
-                    "Pizza Napolitana", 
-                    3500.0, 
-                    1800.0
+                    "sanguche de bondiola", 
+                    4500.0, 
+                    2400.0
             );
             System.out.println("Plato agregado con id: " + idPlato);
 
