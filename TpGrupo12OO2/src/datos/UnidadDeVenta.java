@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 import java.time.LocalDate;
 
 public class UnidadDeVenta {
@@ -16,8 +16,15 @@ public class UnidadDeVenta {
     protected Set<Plato>lstPlatos;
     protected Set<Empleado>lstStaff;
     protected Set<Pedido>lstPedidos;
+    protected Set<Festival>lstFestivales;
     
-public UnidadDeVenta() {}
+public UnidadDeVenta() {
+	//Prevención de NullPointerException
+	   this.lstPlatos=new HashSet<>();
+	   this.lstStaff=new HashSet<>();
+	   this.lstPedidos=new HashSet<>();
+	   this.lstFestivales=new HashSet<>();
+}
     
     public UnidadDeVenta(String nombreComercial,Empleado responsable, double superficie,double costo, String codUnico ) throws Exception {
         this.nombreComercial = nombreComercial;
@@ -32,7 +39,7 @@ public UnidadDeVenta() {}
 		return idUnidad;
 	}
 
-	public void setIdUnidad(long idUnidad) {
+	protected void setIdUnidad(long idUnidad) {
 		this.idUnidad = idUnidad;
 	}
 
@@ -91,6 +98,14 @@ public UnidadDeVenta() {}
         return lstPedidos;
     }
 
+    public void setlstFestivales(Set<Festival> lstFestivales) {
+        this.lstFestivales = lstFestivales;
+    }
+
+    public Set<Festival> getlstFestivales() {
+        return lstFestivales;
+    }
+    
     public void setLstPedidos(Set<Pedido> lstPedidos) {
         this.lstPedidos = lstPedidos;
     }
@@ -102,11 +117,28 @@ public UnidadDeVenta() {}
     public void setLstStaff(Set<Empleado> lstStaff) {
         this.lstStaff = lstStaff;
     }
+    
+    @Override
+	public boolean equals(Object obj) {
+    	
+    	//si ambos punteros contienen la misma dirección de memoria física en el Heap de la JVM.
+    	if(this==obj) return true;
+    	
+    	//Compara que el objeto que recibo no sea nulo y que sea del mismo tipo que la clase que evaluo
+    	if(obj==null|| getClass() !=obj.getClass()) return false;
+    	
+    	UnidadDeVenta udv =(UnidadDeVenta) obj;
 
-	public boolean equals(UnidadDeVenta unidad) {
-		return this.codUnico.equalsIgnoreCase(unidad.getCodUnico());
+    	//Evaluo que el codigo unico sea igual y que no sea nulo ( no importa la capitalizacion)	
+		return codUnico != null && codUnico.equalsIgnoreCase(udv.codUnico);
 	}
-	
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(codUnico != null ? codUnico.toLowerCase() : null);
+    }
+    
+    
 	//CONDICION DE CODIGO 10 CARACTERES
 	public void setCodigo(String codigo) throws Exception {
 		if (codigo == null || codigo.length() != 10) {

@@ -8,22 +8,24 @@ import org.hibernate.Transaction;
 import java.time.LocalDate;
 import datos.UnidadDeVenta;
 import datos.Empleado;
-
+import datos.Pedido;
 public class UnidadDeVentaDao {
 
 	private static Session session;
 	private Transaction tx;
 	private static UnidadDeVentaDao instancia = null;
 
-	protected UnidadDeVentaDao() {
-	}
-
-	public static UnidadDeVentaDao getInstance() {
+	protected UnidadDeVentaDao() {}
+	
+	//----------------------------------------Patrón Singleton---------------------------------------------
+	
+	public static UnidadDeVentaDao getInstance() { 
 		if (instancia == null)
 			instancia = new UnidadDeVentaDao();
 		return instancia;
 	}
-
+	
+	
 	protected void iniciaOperacion() throws HibernateException {
 		session = HibernateUtil.getSessionFactory().openSession();
 		tx = session.beginTransaction();
@@ -32,10 +34,21 @@ public class UnidadDeVentaDao {
 	protected void manejaExcepcion(HibernateException he) throws HibernateException {
 		tx.rollback();
 		throw new HibernateException("ERROR en la capa de acceso a datos", he);
-	}
+	
+	}	
+	//------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
 
-	// Agregar
 
+
+	//---------------------------------------------------------METODOS DEL DAO -----------------------------
+	
+	
+	// 1)--------------------------------------------------Agregar un Objeto
+	
 	public long agregar(UnidadDeVenta objeto) {
 
 		long id = 0;
@@ -50,16 +63,20 @@ public class UnidadDeVentaDao {
 
 			manejaExcepcion(he);
 
-		} finally {
-
-			session.close();
+		} finally  {
+			
+			//Evaluo si la sesion no quedo nula y si en algun otro flujo ya se cerro
+			
+			if (session != null && session.isOpen()) {
+            session.close();
+        	}
 		}
 
 		return id;
-
 	}
 
-	/// Actualizar
+	// 2)--------------------------------------------------Actualizar un Objeto
+	
 	public void actualizar(UnidadDeVenta objeto) {
 		try {
 			iniciaOperacion();
@@ -74,7 +91,9 @@ public class UnidadDeVentaDao {
 		}
 	}
 
-	// Eliminar
+	
+	// 3)--------------------------------------------------Eliminar un Objeto
+	
 
 	public void eliminar(UnidadDeVenta objeto) {
 
@@ -88,34 +107,42 @@ public class UnidadDeVentaDao {
 			manejaExcepcion(he);
 
 		} finally {
-
-			session.close();
+			if (session != null && session.isOpen()) {
+            session.close();
+			}
 		}
 	}
 
-	// Trae unidad por id
+	// 4)--------------------------------------------------Traer un Objeto por ID	
 
-	public UnidadDeVenta traer(long idUnidad) {
+	public UnidadDeVenta traer(long idUnidad) throws HibernateException{
 
 		UnidadDeVenta objeto = null;
 
 		try {
 
 			iniciaOperacion();
-			objeto = (UnidadDeVenta) session.createQuery("from UnidadDeVenta u where u.idUnidad=:idUnidad")
-					.setParameter("idUnidad", idUnidad).uniqueResult();
+			objeto = (UnidadDeVenta) session.createQuery("from UnidadDeVenta u where u.idUnidad=:idUnidad").setParameter("idUnidad", idUnidad).uniqueResult();
 
-		} finally {
+		} catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    } finally {
 
-			session.close();
+			if (session != null && session.isOpen()) {
+	            session.close();
+				}
 		}
 
 		return objeto;
 	}
 
-	public UnidadDeVenta traerPorCodigoUnico(String codUnico) {
-
-		UnidadDeVenta objeto = null;
+	
+	
+	// 5)--------------------------------------------------Traer un Objeto CodUnico
+	
+	public UnidadDeVenta traerPorCodigoUnico(String codUnico) throws HibernateException{
+		
+			UnidadDeVenta objeto = null;
 
 		try {
 
@@ -129,13 +156,20 @@ public class UnidadDeVentaDao {
 
 		} finally {
 
+			
+			if (session != null && session.isOpen()) {
+	            session.close();
+				}
+
+
 			session.close();
+
 		}
 
 		return objeto;
 	}
 
-	// Trae las unidades de venta
+	// 6)--------------------------------------------------Traer una Lista con todas las UDV 
 
 	public List<UnidadDeVenta> traer() throws HibernateException {
 
@@ -145,76 +179,92 @@ public class UnidadDeVentaDao {
 
 			iniciaOperacion();
 			lista = session.createQuery("from UnidadDeVenta", UnidadDeVenta.class).list();
+			
+		}catch (HibernateException he) {
+		        manejaExcepcion(he);
+		    } finally {
 
-		} finally {
-
-			session.close();
+			if (session != null && session.isOpen()) {
+	            session.close();
+				}
 		}
 
 		return lista;
 	}
 
-	// TRAER UNIDAD Y SUS PEDIDOS
-
+	
+	// 7)--------------------------------------------------Traer una UDV con todos sus Pedidos
+	
 	public UnidadDeVenta traerUnidadYPedidos(long idUnidad) throws HibernateException {
 		UnidadDeVenta objeto = null;
 		try {
-			iniciaOperacion();
-			String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
-			objeto = (UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
-			Hibernate.initialize(objeto.getLstPedidos());
-		} finally {
-			session.close();
+		iniciaOperacion();
+		String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
+		objeto=(UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
+		
+		
+		if (objeto != null) {
+            Hibernate.initialize(objeto.getLstPedidos());
+        }
+		}catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    }
+		finally {
+			if (session != null && session.isOpen()) {
+	            session.close();
+	        }
 		}
 		return objeto;
 	}
-
-	// TRAER UNIDAD Y SU STAFF
-
+	
+	
+	// 8)--------------------------------------------------Traer una UDV con todos su Staff
+	
 	public UnidadDeVenta traerUnidadYstaff(long idUnidad) throws HibernateException {
 		UnidadDeVenta objeto = null;
 		try {
-			iniciaOperacion();
-			String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
-			objeto = (UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
-			Hibernate.initialize(objeto.getLstStaff());
-		} finally {
-			session.close();
+		iniciaOperacion();
+		String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
+		objeto=(UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
+		if (objeto != null) {
+            Hibernate.initialize(objeto.getLstStaff());
+        }
+		
+		
+		}catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    }
+		finally {
+			if (session != null && session.isOpen()) {
+	            session.close();
+	        }
 		}
 		return objeto;
 	}
-
-	// TRAER UNIDAD Y SUS PLATOS
-
+	
+	// 7)--------------------------------------------------Traer una UDV con todos sus Platos
+	
 	public UnidadDeVenta traerUnidadYplatos(long idUnidad) throws HibernateException {
 		UnidadDeVenta objeto = null;
 		try {
-			iniciaOperacion();
-			String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
-			objeto = (UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
-			Hibernate.initialize(objeto.getLstPlatos());
-		} finally {
-			session.close();
-		}
+		iniciaOperacion();
+		String hql = "from UnidadDeVenta u where u.idUnidad=:idUnidad";
+		objeto=(UnidadDeVenta) session.createQuery(hql).setParameter("idUnidad", idUnidad).uniqueResult();
+		if (objeto != null) {
+            Hibernate.initialize(objeto.getLstPlatos());
+           }
+		}catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    }
+		finally {
+			if (session != null && session.isOpen()) {
+	            session.close();
+	            }
+			}
 		return objeto;
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<Empleado> traerStaffPorIngresoAnterior(long idUnidad, LocalDate fecha) throws HibernateException {
-		List<Empleado> lista = null;
-		try {
-			iniciaOperacion();
-			String hql = "select e from UnidadDeVenta u join u.lstStaff e where u.idUnidad = :idUnidad and e.fechaIngreso <= :fecha order by e.fechaIngreso asc";
-			lista = session.createQuery(hql).setParameter("idUnidad", idUnidad).setParameter("fecha", fecha).list();
-		} catch (HibernateException he) {
-			manejaExcepcion(he);
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
-		return lista;
-	}
+		
+	
 
 	// Correccion de Nicolás Cerciosimo: Trae la lista de unidades de venta por
 	// empleado responsable

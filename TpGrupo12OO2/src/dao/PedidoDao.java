@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import java.time.LocalDate;
 import datos.Pedido;
 
 public class PedidoDao {
@@ -213,4 +213,33 @@ public class PedidoDao {
 
 		return lista;
 	}
+	
+	//CORRECCION DEL METODO, SE AJUSTO LA CONSULTA A LA LOGICA DE NEGOCIO
+	//ALUMNO LA ROSA LUCAS
+	public long traerCantidadPedidosPorUnidadEntreFechas(long idUnidad, LocalDate fechaInicio, LocalDate fechaFin) throws HibernateException {
+	    long cantidad = 0;
+	    try {
+	        iniciaOperacion();
+	        String hql = "select count(p) from Pedido p where p.unidadDeVenta.idUnidad = :idUnidad and p.fecha between :fechaInicio and :fechaFin";
+
+	        Long resultado = (Long) session.createQuery(hql)
+	                .setParameter("idUnidad", idUnidad)
+	                .setParameter("fechaInicio", fechaInicio)
+	                .setParameter("fechaFin", fechaFin)
+	                .uniqueResult();
+
+	        if (resultado != null) {
+	            cantidad = resultado;
+	        }
+	    } catch (HibernateException he) {
+	        manejaExcepcion(he);
+	    } finally {
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+	    return cantidad;
+	}
+	
+	
 }
