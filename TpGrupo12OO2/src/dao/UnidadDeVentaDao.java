@@ -1,4 +1,5 @@
 package dao;
+
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
@@ -42,6 +43,7 @@ public class UnidadDeVentaDao {
 	
 
 
+
 	//---------------------------------------------------------METODOS DEL DAO -----------------------------
 	
 	
@@ -76,21 +78,23 @@ public class UnidadDeVentaDao {
 	// 2)--------------------------------------------------Actualizar un Objeto
 	
 	public void actualizar(UnidadDeVenta objeto) {
-	    try {
-	        iniciaOperacion();
-	        session.merge(objeto);
-	        tx.commit();
-	    } catch (HibernateException he) {
-	        manejaExcepcion(he);
-	    } finally {
-	        if (session != null && session.isOpen()) {
-	            session.close();
-	        }
-	    }
+		try {
+			iniciaOperacion();
+			session.merge(objeto);
+			tx.commit();
+		} catch (HibernateException he) {
+			manejaExcepcion(he);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
+
 	
 	// 3)--------------------------------------------------Eliminar un Objeto
 	
+
 	public void eliminar(UnidadDeVenta objeto) {
 
 		try {
@@ -131,30 +135,37 @@ public class UnidadDeVentaDao {
 
 		return objeto;
 	}
+
 	
 	
 	// 5)--------------------------------------------------Traer un Objeto CodUnico
 	
 	public UnidadDeVenta traerPorCodigoUnico(String codUnico) throws HibernateException{
 		
-		UnidadDeVenta objeto = null;
-		
+			UnidadDeVenta objeto = null;
+
 		try {
-			
+
 			iniciaOperacion();
-			objeto = (UnidadDeVenta) session.createQuery("from UnidadDeVenta u where u.codUnico=:codUnico").setParameter("codUnico", codUnico).uniqueResult();
-			
+			objeto = (UnidadDeVenta) session.createQuery("from UnidadDeVenta u where u.codUnico=:codUnico")
+					.setParameter("codUnico", codUnico).uniqueResult();
+
 		} catch (HibernateException he) {
-			
+
 			manejaExcepcion(he);
-			
+
 		} finally {
+
 			
 			if (session != null && session.isOpen()) {
 	            session.close();
 				}
+
+
+			session.close();
+
 		}
-		
+
 		return objeto;
 	}
 
@@ -180,6 +191,7 @@ public class UnidadDeVentaDao {
 
 		return lista;
 	}
+
 	
 	// 7)--------------------------------------------------Traer una UDV con todos sus Pedidos
 	
@@ -253,56 +265,61 @@ public class UnidadDeVentaDao {
 	}
 		
 	
-	/*CORRECCION DEL METODO ALUMNO LA ROSA LUCAS, SE AJUSTO LA CONSULTA A LA LOGICA DE NEGOCIO
-	public long traerCantidadDePedidosEntreUnRango(long idUnidad, LocalDate fechaInicio,LocalDate fechaFin) throws HibernateException {
-	    long cantidad =0;
-	    try {
-	        iniciaOperacion();
-	        String hql = "select count(p)  from UnidadDeVenta u join u.lstPedidos"+ "where u.idUnidad = :idUnidad and p.fecha between :fechaInicio and :fechaFin";
-	        Long resultado = (Long) session.createQuery(hql)
-	                .setParameter("idUnidad", idUnidad)
-	                .setParameter("fechaInicio", fechaInicio)
-	                .setParameter("fechaFin", fechaFin)
-	                .uniqueResult();
-	        
-	        if (resultado != null) {
-	            cantidad = resultado;
-	        }       
-	    }catch (HibernateException he) {
-	        manejaExcepcion(he);
-	    } finally {
-	        if (session != null && session.isOpen()) {
-	            session.close();
-	        }
-	    }
-	    return cantidad;
-	}*/
-	
-	
-	
-	
-	//Correccion de Nicolás Cerciosimo: Trae la lista de unidades de venta por empleado responsable
-	
-		public List<UnidadDeVenta> traerUnidadesComoResponsable(Empleado empleado) {
 
-			List<UnidadDeVenta> lista = null;
+	// Correccion de Nicolás Cerciosimo: Trae la lista de unidades de venta por
+	// empleado responsable
 
-			try {
+	public List<UnidadDeVenta> traerUnidadesComoResponsable(Empleado empleado) {
 
-				iniciaOperacion();
-				lista = session.createQuery("from UnidadDeVenta u where u.responsable = :empleado",
-						UnidadDeVenta.class).setParameter("empleado", empleado).list();
+		List<UnidadDeVenta> lista = null;
 
-			} catch (HibernateException he) {
+		try {
 
-				manejaExcepcion(he);
+			iniciaOperacion();
+			lista = session.createQuery("from UnidadDeVenta u where u.responsable = :empleado", UnidadDeVenta.class)
+					.setParameter("empleado", empleado).list();
 
-			} finally {
+		} catch (HibernateException he) {
 
-				session.close();
+			manejaExcepcion(he);
+
+		} finally {
+
+			session.close();
+		}
+
+		return lista;
+	}
+
+	// Liquidar haberes de toda la unidad de venta
+
+	public double liquidarHaberes(UnidadDeVenta unidad) {
+
+		double total = 0;
+
+		try {
+
+			iniciaOperacion();
+			String hql = "select distinct u from UnidadDeVenta u left join fetch u.lstStaff where u = :unidad";
+
+			UnidadDeVenta u = (UnidadDeVenta) session.createQuery(hql).setParameter("unidad", unidad).uniqueResult();
+
+			if (u != null && u.getLstStaff() != null) {
+				for (Empleado e : u.getLstStaff()) {
+					total += e.liquidarHaberes();
+				}
 			}
 
-			return lista;
+		} catch (HibernateException he) {
+
+			manejaExcepcion(he);
+
+		} finally {
+
+			session.close();
 		}
+
+		return total;
+	}
 
 }

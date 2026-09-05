@@ -3,6 +3,7 @@ package datos;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
+import datos.Configuracion;
 
 public abstract class Empleado {
 
@@ -121,9 +122,18 @@ public abstract class Empleado {
 	public int calcularAntiguedad() {
 		return Period.between(fechaIngreso, LocalDate.now()).getYears();
 	}
+	
+	//Metodo complementario para calcular la liquidacion de haberes en UnidadDeVenta
+	public double liquidarHaberes() {
+		
+		double sueldo = calcularSueldo();
+		int antiguedad = calcularAntiguedad();
+		
+		return sueldo + (antiguedad * Configuracion.VALOR_ANIO_ANTIGUEDAD);
+	}
 
 	public boolean esMayorDeEdad() {
-		return Period.between(fechaNacimiento, LocalDate.now()).getYears() >= 18;
+		return Period.between(fechaNacimiento, LocalDate.now()).getYears() >= Configuracion.EDAD_MINIMA_LABORAL;
 	}
 	
 	public abstract double calcularSueldo();

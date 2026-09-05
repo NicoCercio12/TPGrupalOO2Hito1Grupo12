@@ -101,5 +101,15 @@ public class UnidadDeVentaABM {
 		return UnidadDeVentaDao.getInstance().traerUnidadesComoResponsable(empleado);
 		
 	}
+	
+	public double liquidarHaberes(UnidadDeVenta unidad) throws Exception {
+		
+		if(unidad == null) {
+			
+			throw new Exception("ERROR: No existe la unidad de venta");
+		}
+		
+		return UnidadDeVentaDao.getInstance().liquidarHaberes(unidad);
+	}
 
 }

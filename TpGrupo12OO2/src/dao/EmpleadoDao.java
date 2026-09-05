@@ -1,15 +1,13 @@
 package dao;
 
 import java.util.List;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import datos.Cajero;
 import datos.Cocinero;
 import datos.Empleado;
-import datos.UnidadDeVenta;
+
 
 public class EmpleadoDao {
 
