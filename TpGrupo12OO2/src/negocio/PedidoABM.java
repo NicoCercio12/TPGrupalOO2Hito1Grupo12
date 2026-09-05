@@ -1,5 +1,5 @@
 package negocio;
-
+import org.hibernate.HibernateException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -166,4 +166,24 @@ public class PedidoABM {
 		return PedidoDao.getInstance()
 				.traerPorUnidad(idUnidad);
 	}
+	
+	public long traerCantidadPedidosPorUnidadEntreFechas(long idUnidad, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
+        // Validaciones previas de la capa de negocio
+        if (fechaInicio == null || fechaFin == null) {
+            throw new Exception("ERROR en PedidoABM: Las fechas de búsqueda no pueden ser nulas.");
+        }
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new Exception("ERROR en PedidoABM: La fecha de inicio no puede ser posterior a la fecha de fin.");
+        }
+        
+        try {
+            return PedidoDao.getInstance().traerCantidadPedidosPorUnidadEntreFechas(idUnidad, fechaInicio, fechaFin);
+        } catch (HibernateException he) {
+            throw new Exception("ERROR en PedidoABM -> " + he.getMessage());
+        }
+    }
+	
+	
+	
+	
 }

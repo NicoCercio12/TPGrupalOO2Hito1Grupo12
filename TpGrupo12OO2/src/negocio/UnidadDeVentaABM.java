@@ -11,8 +11,10 @@ import datos.PuestoDesarmable;
 import datos.UnidadDeVenta;
 
 public class UnidadDeVentaABM {
-
-	private static UnidadDeVentaABM instancia = null; // Patrón Singleton
+	
+	
+	// ----------------------------Patrón Singleton-------------------------------------------------------
+	private static UnidadDeVentaABM instancia = null; 
 
 	protected UnidadDeVentaABM() {
 	}
@@ -22,7 +24,12 @@ public class UnidadDeVentaABM {
 			instancia = new UnidadDeVentaABM();
 		return instancia;
 	}
-
+	//------------------------------------------------------------------------------------------------------
+	
+	
+	//-------------------------------------------------METODOS DE LA CLASE DE NEGOCIO ----------------------
+	
+	
 	public long agregarFoodTruck(String nombreComercial, Empleado responsable, double superficie, double costo,
 			String codigo, String patente, boolean requiereElecetrcidad) throws Exception {
 
