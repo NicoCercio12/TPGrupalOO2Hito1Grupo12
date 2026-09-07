@@ -47,4 +47,9 @@ public class PlatoABM {
     public List<Plato> traer() throws Exception {
         return PlatoDao.getInstance().traer();
     }
+    
+ // Traer el plato más vendido de una Unidad de Venta
+    public Plato traerMasVendidoPorUnidad(long idUnidad) throws Exception {
+        return PlatoDao.getInstance().traerMasVendidoPorUnidad(idUnidad);
+    }
 }
