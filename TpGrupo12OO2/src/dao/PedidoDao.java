@@ -267,4 +267,41 @@ public class PedidoDao {
         return total;
     }
 	
+	
+	//TRAER PEDIDO DE UN FESTIVAL ENTRE FECHAS, CORRECCION LOGICA DE NEGOCIO 
+	//ALUMNO: FUNES MATIAS
+	
+	// Traer pedidos de un Festival entre dos fechas
+	public List<Pedido> traerPorFestivalEntreFechas(long idFestival, LocalDate fechaInicio, LocalDate fechaFin) {
+
+	    List<Pedido> lista = null;
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql =
+	                "from Pedido p "
+	              + "where p.festival.idFestival = :idFestival "
+	              + "and p.fecha between :fechaInicio and :fechaFin "
+	              + "order by p.fecha";
+
+	        lista = session.createQuery(hql, Pedido.class)
+	                .setParameter("idFestival", idFestival)
+	                .setParameter("fechaInicio", fechaInicio)
+	                .setParameter("fechaFin", fechaFin)
+	                .list();
+	    } catch (HibernateException he) {
+
+	        manejaExcepcion(he);
+
+	    } finally {
+
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+
+	    return lista;
+	}
+	
 }
