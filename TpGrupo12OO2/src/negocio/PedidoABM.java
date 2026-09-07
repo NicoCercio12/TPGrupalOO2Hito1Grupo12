@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import dao.PedidoDao;
+import dao.UnidadDeVentaDao;
 
 import datos.Festival;
 import datos.ItemPedido;
@@ -167,8 +168,20 @@ public class PedidoABM {
 				.traerPorUnidad(idUnidad);
 	}
 	
+	
+	//************CASO DE USO : PEDIDOS DE UNA UNIDAD ENTRE UN LAPSO DE TIEMPO***************
+	
+	//ALUMNO LUCAS LA ROSA
+	
 	public long traerCantidadPedidosPorUnidadEntreFechas(long idUnidad, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
-        // Validaciones previas de la capa de negocio
+      
+		// Validaciones previas de la capa de negocio
+		
+		UnidadDeVenta udv = UnidadDeVentaDao.getInstance().traer(idUnidad);
+		if (udv == null) {
+	        throw new Exception("La unidad con ID " + idUnidad + " no existe.");
+	    }
+
         if (fechaInicio == null || fechaFin == null) {
             throw new Exception("ERROR en PedidoABM: Las fechas de búsqueda no pueden ser nulas.");
         }
@@ -183,7 +196,28 @@ public class PedidoABM {
         }
     }
 	
+	//************CASO DE USO : VALOR TOTAL DE UN PEDIDO********************************
 	
+	//ALUMNO LUCAS LA ROSA
+	
+	
+	public double calcularTotalPedido(int idPedido) throws Exception {
+	    // 1. Valida que el pedido exista en la base de datos
+	    Pedido pedido = PedidoDao.getInstance().traer(idPedido);
+	    if (pedido == null) {
+	        throw new Exception("El pedido con ID " + idPedido + " no existe.");
+	    }
+
+	  
+	    Double total = PedidoDao.getInstance().calcularTotalPedidoPorHql(idPedido);
+
+	    // 2. Dispara la excepción si la colección está vacía
+	    if (total == null) {
+	        throw new Exception("El calculo del pedido esta vacio (no posee items cargados).");
+	    }
+
+	    return total;
+	}
 	
 	
 }

@@ -13,6 +13,12 @@
 	        <property name="nombre" column="nombre"  type="string"/>
 	        <property name="precioVenta" column="precioVenta"  type="double"/>
 	        <property name="costoProduccion" column="costoProduccion"  type="double"/>
-	
+			
+			<!-- N:M CON UDV -->
+		<set name="lstUnidades" table="unidadxplato" inverse="true" lazy="true" fetch="select">
+    	<key column="idPlato" />
+    	<many-to-many column="idUnidad" class="datos.UnidadDeVenta" />
+		</set>
+		
 	    </class>
 	</hibernate-mapping>

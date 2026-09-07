@@ -14,6 +14,11 @@
         <property column="fechaInicio" name="fechaInicio" type="java.time.LocalDate"/>
         <property column="fechaFin" name="fechaFin" type="java.time.LocalDate"/>
 
+		<!-- N:M CON UDV -->
+		<set name="lstUnidades" table="unidadxfestival" inverse="true" lazy="true" fetch="select">
+    	<key column="idFestival" />
+    	<many-to-many column="idUnidad" class="datos.UnidadDeVenta" />
+		</set>
        
     </class>
 </hibernate-mapping>

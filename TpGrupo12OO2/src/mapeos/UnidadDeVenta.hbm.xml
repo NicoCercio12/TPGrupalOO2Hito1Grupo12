@@ -10,14 +10,28 @@
 		<property column="codUnico" name="codUnico" type="string" />
 		<property column="costo" name="costo" type="double" />
 		<property column="superficie" name="superficie" type="double" />
+		
+		<!-- 1) RELACIÓN 1 a 1: Responsable (Empleado) -->
+		<many-to-one name="responsable" class="datos.Empleado" column="idResponsable" unique="true" not-null="false" />
 
-		<!-- RELACIÓN CON EMPLEADO RESPONSABLE -->
-		<many-to-one name="responsable" class="datos.Empleado" column="idResponsable" not-null="false" />
 
+		<!-- UNO A MUCHOS CON STAFF (name coincide con lstStaff) -->
+		<set name="lstStaff" table="empleado" inverse="true" lazy="true" fetch="select">
+			<key column="idUnidad" />
+			<one-to-many class="datos.Empleado" />
+		</set> 
+		
 		<!-- MUCHOS A MUCHOS CON PLATO (name coincide con lstPlatos) -->
 		<set table="platosxunidad" name="lstPlatos" outer-join="true" lazy="true">
 			<key column="idUnidad"/>
 			<many-to-many column="idPlato" class="datos.Plato"/>
+		</set>
+		
+		
+		<!-- MUCHOS A MUCHOS CON FESTIVAL  -->
+		<set table="unidadxfestival" name="lstFestivales" outer-join="true" lazy="true">
+			<key column="idUnidad"/>
+			<many-to-many column="idFestival" class="datos.Festival"/>
 		</set>
 		
 		<!-- UNO A MUCHOS CON PEDIDO (name coincide con lstPedidos) -->
@@ -26,11 +40,7 @@
 			<one-to-many class="datos.Pedido" />
 		</set>
 		
-		<!-- UNO A MUCHOS CON STAFF (name coincide con lstStaff) -->
-		<set name="lstStaff" table="empleado" inverse="true" lazy="true">
-			<key column="idUnidad" />
-			<one-to-many class="datos.Empleado" />
-		</set> 
+		
 
 		<!-- SUBCLASE PuestoDesarmable -->
 		<joined-subclass name="datos.PuestoDesarmable" table="puestoDesarmable">
