@@ -219,5 +219,39 @@ public class PedidoABM {
 	    return total;
 	}
 	
+	//CASO DE USO: PEDIDOS DE UN FESTIVAL ENTRE FECHAS
+	//ALUMNO : FUNES MATIAS, CORRECCION LOGICA DE NEGOCIO
+	
+	public List<Pedido> traerPorFestivalEntreFechas(
+	        long idFestival,
+	        LocalDate fechaInicio,
+	        LocalDate fechaFin) throws Exception {
+
+	    // Validacion de festival
+	    Festival festival = FestivalABM.getInstance().traer(idFestival);
+
+	    if (festival == null) {
+	        throw new Exception(
+	                "ERROR: No existe el festival con ID: " + idFestival);
+	    }
+
+	    // Validacion de fechas
+	    if (fechaInicio == null || fechaFin == null) {
+	        throw new Exception(
+	                "ERROR: Las fechas no pueden ser nulas");
+	    }
+
+	    // Validacion de orden de fechas
+	    if (fechaInicio.isAfter(fechaFin)) {
+	        throw new Exception(
+	                "ERROR: La fecha de inicio no puede ser posterior a la fecha de fin");
+	    }
+
+	    return PedidoDao.getInstance()
+	            .traerPorFestivalEntreFechas(
+	                    idFestival,
+	                    fechaInicio,
+	                    fechaFin);
+	}
 	
 }
