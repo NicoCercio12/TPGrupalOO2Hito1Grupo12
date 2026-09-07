@@ -28,7 +28,21 @@ public class TestAgregarPedido {
             }
 
             // Tomamos el primer plato disponible
-            Plato plato = unidad.getLstPlatos().iterator().next();
+            //Plato plato = unidad.getLstPlatos().iterator().next();
+            
+            Plato plato = null;
+
+            for (Plato p : unidad.getLstPlatos()) {
+                if (p.getIdPlato() == 3) {
+                    plato = p;
+                    break;
+                }
+            }
+
+            if (plato == null) {
+                System.out.println("El plato 2 no está asociado a la unidad.");
+                return;
+            }
 
             // Agregamos el pedido
             long idPedido = PedidoABM.getInstance().agregar(
@@ -36,7 +50,7 @@ public class TestAgregarPedido {
                     festival,
                     unidad,
                     plato,
-                    2 // cantidad
+                    3 // cantidad
             );
             System.out.println("Pedido agregado correctamente. ID: " + idPedido);
 

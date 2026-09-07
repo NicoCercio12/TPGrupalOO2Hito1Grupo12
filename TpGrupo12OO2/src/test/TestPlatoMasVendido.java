@@ -14,8 +14,8 @@ public class TestPlatoMasVendido {
 
             Plato plato = PlatoABM.getInstance()
                     .traerMasVendidoPorUnidad(idUnidad);
-
-            System.out.println("--- Plato más vendido ---");
+            
+            System.out.println("-- Plato más vendido --");
             System.out.println(plato);
 
         } catch (Exception e) {

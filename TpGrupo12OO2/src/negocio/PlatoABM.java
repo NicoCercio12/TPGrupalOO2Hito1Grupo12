@@ -52,21 +52,4 @@ public class PlatoABM {
     public Plato traerMasVendidoPorUnidad(long idUnidad) throws Exception {
         return PlatoDao.getInstance().traerMasVendidoPorUnidad(idUnidad);
     }
-    
-    public void cambiarPrecio(long idPlato, double nuevoPrecio) throws Exception {
-        Plato plato = PlatoDao.getInstance().traer(idPlato);
-
-        if (plato == null) {
-            throw new Exception("No existe un plato con ese ID");
-        }
-
-        plato.setPrecioVenta(nuevoPrecio);
-
-        PlatoDao.getInstance().actualizar(plato);
-    }
-    
-    public Plato traerMasBarato() throws Exception {
-        return PlatoDao.getInstance().traerMasBarato();
-    }
-    
 }

@@ -200,26 +200,4 @@ public class PlatoDao {
 
 		    return plato;
 		}
-		
-		public Plato traerMasBarato() {
-		    Plato plato = null;
-
-		    try {
-		        iniciaOperacion();
-
-		        plato = (Plato) session.createQuery(
-		                "from Plato p order by p.precioVenta asc")
-		                .setMaxResults(1)
-		                .uniqueResult();
-
-		    } catch (HibernateException he) {
-		        manejaExcepcion(he);
-		    } finally {
-		        session.close();
-		    }
-
-		    return plato;
-		}
-		
-
 }
