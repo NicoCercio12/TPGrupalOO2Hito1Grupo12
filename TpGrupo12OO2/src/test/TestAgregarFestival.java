@@ -16,7 +16,7 @@ public class TestAgregarFestival {
         int idFestival = FestivalDao.getInstance().agregar(festival);
         System.out.println("Festival agregado con id: " + idFestival);
 
-        // Verificación: traer por id
+        // Verificacionn: traer por id
         System.out.println("\n--- Verificación ---");
         System.out.println(FestivalDao.getInstance().traer(idFestival));
 
@@ -27,7 +27,7 @@ public class TestAgregarFestival {
         int idFestival2 = FestivalDao.getInstance().agregar(festival2);
         System.out.println("Festival agregado con id: " + idFestival2);
 
-        // Verificación: traer todos
+        // Verificacion: traer todos
         System.out.println("\n--- Lista de Festivales ---");
         FestivalDao.getInstance().traer().forEach(System.out::println);
     }
