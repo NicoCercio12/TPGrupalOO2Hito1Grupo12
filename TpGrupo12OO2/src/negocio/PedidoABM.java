@@ -227,7 +227,7 @@ public class PedidoABM {
 	        LocalDate fechaInicio,
 	        LocalDate fechaFin) throws Exception {
 
-	    // Validacion de festival
+	    // Valido festival
 	    Festival festival = FestivalABM.getInstance().traer(idFestival);
 
 	    if (festival == null) {
@@ -235,13 +235,13 @@ public class PedidoABM {
 	                "ERROR: No existe el festival con ID: " + idFestival);
 	    }
 
-	    // Validacion de fechas
+	    // Valido fechas
 	    if (fechaInicio == null || fechaFin == null) {
 	        throw new Exception(
 	                "ERROR: Las fechas no pueden ser nulas");
 	    }
 
-	    // Validacion de orden de fechas
+	    // Valido orden de fechas
 	    if (fechaInicio.isAfter(fechaFin)) {
 	        throw new Exception(
 	                "ERROR: La fecha de inicio no puede ser posterior a la fecha de fin");
@@ -252,6 +252,49 @@ public class PedidoABM {
 	                    idFestival,
 	                    fechaInicio,
 	                    fechaFin);
+	}
+	
+	// CASO DE USO: CANTIDAD VENDIDA DE UN PLATO EN UN FESTIVAL
+	// ALUMNO: FUNES MATIAS
+
+	public long traerCantidadVendidaDePlatoEnFestival(long idFestival, long idPlato) throws Exception {
+
+		//VALIDO ID FESTIVAL > 0
+	    if (idFestival <= 0) {
+	        throw new Exception(
+	                "ERROR: El ID del festival debe ser mayor a cero");
+	    }
+	    
+	  //VALIDO ID PLATO > 0
+	    if (idPlato <= 0) {
+	        throw new Exception(
+	                "ERROR: El ID del plato debe ser mayor a cero");
+	    }
+
+	    Festival festival =
+	            FestivalABM.getInstance().traer(idFestival);
+
+	    //VALIDO QUE FESTIVAL EXISTA
+	    if (festival == null) {
+	        throw new Exception(
+	                "ERROR: No existe el festival con ID: "
+	                + idFestival);
+	    }
+
+	    Plato plato =
+	            PlatoABM.getInstance().traer(idPlato);
+
+	    //VALIDO QUE EXISTA PLATO
+	    if (plato == null) {
+	        throw new Exception(
+	                "ERROR: No existe el plato con ID: "
+	                + idPlato);
+	    }
+
+	    return PedidoDao.getInstance()
+	            .traerCantidadVendidaDePlatoEnFestival(
+	                    idFestival,
+	                    idPlato);
 	}
 	
 }

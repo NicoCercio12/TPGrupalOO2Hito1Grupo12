@@ -304,4 +304,45 @@ public class PedidoDao {
 	    return lista;
 	}
 	
+	// CASO DE USO: CANTIDAD VENDIDA DE UN PLATO EN UN FESTIVAL
+	// ALUMNO: FUNES MATIAS
+
+	public long traerCantidadVendidaDePlatoEnFestival(long idFestival, long idPlato) {
+
+	    long cantidad = 0;
+
+	    try {
+
+	        iniciaOperacion();
+
+	        String hql =
+	                "select sum(i.cantidad) "
+	              + "from Pedido p "
+	              + "join p.items i "
+	              + "where p.festival.idFestival = :idFestival "
+	              + "and i.plato.idPlato = :idPlato";
+
+	        Long resultado = (Long) session.createQuery(hql)
+	                .setParameter("idFestival", idFestival)
+	                .setParameter("idPlato", idPlato)
+	                .uniqueResult();
+
+	        if (resultado != null) {
+	            cantidad = resultado;
+	        }
+
+	    } catch (HibernateException he) {
+
+	        manejaExcepcion(he);
+
+	    } finally {
+
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+
+	    return cantidad;
+	}
+	
 }
