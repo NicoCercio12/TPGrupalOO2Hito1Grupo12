@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.time.LocalDate;
+
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -146,4 +148,29 @@ public class FestivalDao {
 
         return lista;
     }
+    
+    public List<Festival> traerPorRangoFechas(LocalDate inicio, LocalDate fin) {
+        List<Festival> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                "select distinct f from Festival f " +
+                "left join fetch f.lstUnidades " +
+                "where f.fechaInicio >= :inicio and f.fechaFin <= :fin",
+                Festival.class)
+                .setParameter("inicio", inicio)
+                .setParameter("fin", fin)
+                .list();
+            tx.commit();
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
+    
+    
+    
 }
