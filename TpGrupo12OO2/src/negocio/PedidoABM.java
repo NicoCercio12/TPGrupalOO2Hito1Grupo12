@@ -201,7 +201,7 @@ public class PedidoABM {
 	//ALUMNO LUCAS LA ROSA
 	
 	
-	public double calcularTotalPedido(int idPedido) throws Exception {
+	public Double calcularTotalPedido(int idPedido) throws Exception {
 	    // 1. Valida que el pedido exista en la base de datos
 	    Pedido pedido = PedidoDao.getInstance().traer(idPedido);
 	    if (pedido == null) {

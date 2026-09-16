@@ -15,7 +15,7 @@ public class TestAgregarPedido {
     public static void main(String[] args) {
         try {
             long idFestival = 1; // Festival ya cargado en BD
-            long idUnidad = 1;   // Unidad ya cargada en BD
+            long idUnidad = 2;   // Unidad ya cargada en BD
 
             // Traemos el festival y la unidad con sus platos
             Festival festival = FestivalABM.getInstance().traer(idFestival);

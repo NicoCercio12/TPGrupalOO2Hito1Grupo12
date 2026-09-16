@@ -10,7 +10,7 @@ public class TestcalcularTotalPedido {
         System.out.println("--- Test 1: Cálculo de total correcto ---");
         try {
             int idPedidoValido = 1;
-            double total = pedido.calcularTotalPedido(idPedidoValido);
+            Double total = pedido.calcularTotalPedido(idPedidoValido);
             System.out.println("Total calculado para Pedido ID " + idPedidoValido + ": $" + total);
         } catch (Exception e) {
             System.out.println( e.getMessage());

@@ -253,6 +253,8 @@ public class PedidoDao {
                        + "join p.items i "
                        + "where p.idPedido = :idPedido";
 
+            
+            
             total = (Double) session.createQuery(hql)
                                     .setParameter("idPedido", idPedido)
                                     .uniqueResult();

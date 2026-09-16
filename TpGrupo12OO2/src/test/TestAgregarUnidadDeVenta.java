@@ -23,22 +23,22 @@ public class TestAgregarUnidadDeVenta {
 
 			// 2. Crear unidades de venta (códigos de 10 caracteres)
 			long idFoodTruck = UnidadDeVentaABM.getInstance().agregarFoodTruck(
-					"FoodTruck Central",
+					"FoodTruck Medio",
 					responsable,
 					20.0,
 					280000.0,
-					"FT-9999032",
+					"FT-9963032",
 					"AF999ZZ",
 					true
 			);
 			System.out.println("FoodTruck creado con ID: " + idFoodTruck);
 
 			long idPuesto = UnidadDeVentaABM.getInstance().agregarPuestoDesarmable(
-					"Puesto Gourmet Plaza",
+					"Puesto Gourmet medio",
 					responsable,
 					35.0,
 					150000.0,
-					"PD-9999032",
+					"PD-9977032",
 					2,
 					90
 			);
