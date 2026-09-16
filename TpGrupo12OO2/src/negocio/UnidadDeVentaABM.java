@@ -94,14 +94,21 @@ public class UnidadDeVentaABM {
 		
 	}
 	
-	public double liquidarHaberes(UnidadDeVenta unidad) throws Exception {
-		
-		if(unidad == null) {
-			
-			throw new Exception("ERROR: No existe la unidad de venta");
-		}
-		
-		return UnidadDeVentaDao.getInstance().liquidarHaberes(unidad);
+	public double liquidarHaberes(UnidadDeVenta unidad, LocalDate fechaDesde, LocalDate fechaHasta) {
+
+	    double total = 0;
+
+	    UnidadDeVenta u = UnidadDeVentaDao.getInstance().liquidarHaberes(unidad);
+
+	    if (u != null && u.getLstStaff() != null) {
+	        for (Empleado e : u.getLstStaff()) {
+	            if (!e.getFechaIngreso().isAfter(fechaHasta)) {
+	                total += e.liquidarHaberes(fechaHasta);
+	            }
+	        }
+	    }
+
+	    return total;
 	}
 
 }

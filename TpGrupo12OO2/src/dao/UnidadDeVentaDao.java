@@ -293,33 +293,27 @@ public class UnidadDeVentaDao {
 
 	// Liquidar haberes de toda la unidad de venta
 
-	public double liquidarHaberes(UnidadDeVenta unidad) {
+	public UnidadDeVenta liquidarHaberes(UnidadDeVenta unidad) {
 
-		double total = 0;
+	    UnidadDeVenta u = null;
 
-		try {
+	    try {
 
-			iniciaOperacion();
-			String hql = "select distinct u from UnidadDeVenta u left join fetch u.lstStaff where u = :unidad";
+	        iniciaOperacion();
+	        String hql = "select distinct u from UnidadDeVenta u left join fetch u.lstStaff where u = :unidad";
+	        u = (UnidadDeVenta) session.createQuery(hql).setParameter("unidad", unidad).uniqueResult();
+	        tx.commit();
 
-			UnidadDeVenta u = (UnidadDeVenta) session.createQuery(hql).setParameter("unidad", unidad).uniqueResult();
+	    } catch (HibernateException he) {
 
-			if (u != null && u.getLstStaff() != null) {
-				for (Empleado e : u.getLstStaff()) {
-					total += e.liquidarHaberes();
-				}
-			}
+	        manejaExcepcion(he);
 
-		} catch (HibernateException he) {
+	    } finally {
 
-			manejaExcepcion(he);
+	        session.close();
+	    }
 
-		} finally {
-
-			session.close();
-		}
-
-		return total;
+	    return u;
 	}
 
 }

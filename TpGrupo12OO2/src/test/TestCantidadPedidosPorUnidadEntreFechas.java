@@ -11,7 +11,7 @@ public class TestCantidadPedidosPorUnidadEntreFechas {
 		
 		System.out.println("--- Test 1: Cálculo entre fechas correcto ---");
 		
-		LocalDate fechaInicio= LocalDate.parse("2026-09-20");
+		LocalDate fechaInicio= LocalDate.parse("2026-09-09");
 		LocalDate fechaFin=LocalDate.parse("2026-09-30");
 		long idUnidad = 2;
 		try {

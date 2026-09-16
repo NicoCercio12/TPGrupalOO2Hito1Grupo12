@@ -1,5 +1,7 @@
 package test;
 
+import java.time.LocalDate;
+
 import negocio.EmpleadoABM;
 import negocio.UnidadDeVentaABM;
 import datos.Empleado;
@@ -7,49 +9,53 @@ import datos.UnidadDeVenta;
 
 public class TestNicolasCerciosimo2 {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		try {
+        try {
 
-			UnidadDeVentaABM unidadABM = UnidadDeVentaABM.getInstance();
-			EmpleadoABM empleadoABM = EmpleadoABM.getInstance();
+            UnidadDeVentaABM unidadABM = UnidadDeVentaABM.getInstance();
+            EmpleadoABM empleadoABM = EmpleadoABM.getInstance();
 
-			// 1. Traemos la unidad
-			UnidadDeVenta unidad = unidadABM.traer(1L);
+            // 1. Traemos la unidad
+            UnidadDeVenta unidad = unidadABM.traer(1L);
 
-			if (unidad == null) {
-				throw new Exception("ERROR: No se encontro la Unidad de Venta con ID 1.");
-			}
+            if (unidad == null) {
+                throw new Exception("ERROR: No se encontro la Unidad de Venta con ID 1.");
+            }
 
-			System.out.println("Unidad de Venta recuperada: " + unidad.getNombreComercial());
+            System.out.println("Unidad de Venta recuperada: " + unidad.getNombreComercial());
 
-			// 2. Ejecutamos la liquidacion total
-			// (Este metodo ejecuta el HQL con 'left join fetch' en su propia sesion)
-			double totalHaberes = unidadABM.liquidarHaberes(unidad);
+            // 2. Definimos el período a liquidar
+            LocalDate fechaDesde = LocalDate.of(2026, 1, 1);
+            LocalDate fechaHasta = LocalDate.of(2026, 1, 31);
 
-			System.out.println("-------------------------------------------------------");
-			System.out.println("TOTAL HABERES A PAGAR EN LA UNIDAD: $" + totalHaberes);
-			System.out.println("-------------------------------------------------------");
+            // 3. Ejecutamos la liquidacion total del período
+            double totalHaberes = unidadABM.liquidarHaberes(unidad, fechaDesde, fechaHasta);
 
-			// 3. Desglose individual: consultamos a los empleados desde el ABM
-			// para no depender del proxy lazy de la unidad fuera de sesion
-			System.out.println("\n--- DESGLOSE POR EMPLEADO ---");
-			
-			String[] dnis = {"30111222", "28555666", "34324324", "34324325"};
-			
-			for (String dni : dnis) {
-				Empleado emp = empleadoABM.traerPorDni(dni);
-				if (emp != null) {
-					System.out.println("Empleado: " + emp.getApellido() + ", " + emp.getNombre() 
-							+ " | Haberes: $" + emp.liquidarHaberes());
-				}
-			}
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Período liquidado: " + fechaDesde + " a " + fechaHasta);
+            System.out.println("TOTAL HABERES A PAGAR EN LA UNIDAD: $" + totalHaberes);
+            System.out.println("-------------------------------------------------------");
 
-		} catch (Exception e) {
+            // 4. Desglose individual: consultamos a los empleados desde el ABM
+            // para no depender del proxy lazy de la unidad fuera de sesion
+            System.out.println("\n--- DESGLOSE POR EMPLEADO ---");
 
-			System.err.println("ERROR EN TEST: " + e.getMessage());
-			e.printStackTrace();
+            String[] dnis = {"30111222", "28555666", "34324324", "34324325"};
 
-		}
-	}
+            for (String dni : dnis) {
+                Empleado emp = empleadoABM.traerPorDni(dni);
+                if (emp != null) {
+                    System.out.println("Empleado: " + emp.getApellido() + ", " + emp.getNombre()
+                            + " | Haberes al " + fechaHasta + ": $" + emp.liquidarHaberes(fechaHasta));
+                }
+            }
+
+        } catch (Exception e) {
+
+            System.err.println("ERROR EN TEST: " + e.getMessage());
+            e.printStackTrace();
+
+        }
+    }
 }

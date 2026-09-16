@@ -171,7 +171,7 @@ public class PlatoDao {
 		}
 		
 		// Traer el plato más vendido de una Unidad de Venta
-		public Plato traerMasVendidoPorUnidad(long idUnidad) {
+		public Plato traerMasVendidoPorUnidad(long idUnidad) { //por unidad y rango de fechas o por festival
 
 		    Plato plato = null;
 

@@ -124,7 +124,7 @@ public abstract class Empleado {
 	}
 	
 	//Metodo complementario para calcular la liquidacion de haberes en UnidadDeVenta
-	public double liquidarHaberes() {
+	public double liquidarHaberes(LocalDate fecha) {
 		
 		double sueldo = calcularSueldo();
 		int antiguedad = calcularAntiguedad();
