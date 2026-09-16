@@ -6,7 +6,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.time.LocalDate;
+
+import datos.Festival;
 import datos.Pedido;
+import datos.Plato;
 
 public class PedidoDao {
 
@@ -272,6 +275,7 @@ public class PedidoDao {
 	//ALUMNO: FUNES MATIAS
 	
 	// Traer pedidos de un Festival entre dos fechas
+	//CORREGIR!!!
 	public List<Pedido> traerPorFestivalEntreFechas(long idFestival, LocalDate fechaInicio, LocalDate fechaFin) {
 
 	    List<Pedido> lista = null;
@@ -306,8 +310,9 @@ public class PedidoDao {
 	
 	// CASO DE USO: CANTIDAD VENDIDA DE UN PLATO EN UN FESTIVAL
 	// ALUMNO: FUNES MATIAS
-
-	public long traerCantidadVendidaDePlatoEnFestival(long idFestival, long idPlato) {
+	//CORREGIR! IDFESTIVAL E IDPLATO
+	
+	public long traerCantidadVendidaDePlatoEnFestival(Festival festival, Plato plato) {
 
 	    long cantidad = 0;
 
@@ -319,12 +324,12 @@ public class PedidoDao {
 	                "select sum(i.cantidad) "
 	              + "from Pedido p "
 	              + "join p.items i "
-	              + "where p.festival.idFestival = :idFestival "
-	              + "and i.plato.idPlato = :idPlato";
+	              + "where p.festival = :festival "
+	              + "and i.plato = :plato";
 
 	        Long resultado = (Long) session.createQuery(hql)
-	                .setParameter("idFestival", idFestival)
-	                .setParameter("idPlato", idPlato)
+	                .setParameter("festival", festival)
+	                .setParameter("plato", plato)
 	                .uniqueResult();
 
 	        if (resultado != null) {

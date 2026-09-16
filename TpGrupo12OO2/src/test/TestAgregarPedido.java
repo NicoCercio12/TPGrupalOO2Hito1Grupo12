@@ -33,7 +33,7 @@ public class TestAgregarPedido {
             Plato plato = null;
 
             for (Plato p : unidad.getLstPlatos()) {
-                if (p.getIdPlato() == 3) {
+                if (p.getIdPlato() == 1) {
                     plato = p;
                     break;
                 }
@@ -45,6 +45,7 @@ public class TestAgregarPedido {
             }
 
             // Agregamos el pedido
+            //Arreglar!
             long idPedido = PedidoABM.getInstance().agregar(
                     LocalDate.now(),
                     festival,

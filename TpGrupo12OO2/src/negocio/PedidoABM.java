@@ -12,6 +12,8 @@ import datos.Pedido;
 import datos.Plato;
 import datos.UnidadDeVenta;
 
+
+
 public class PedidoABM {
 
 	private static PedidoABM instancia = null; // Patrón Singleton
@@ -257,44 +259,22 @@ public class PedidoABM {
 	// CASO DE USO: CANTIDAD VENDIDA DE UN PLATO EN UN FESTIVAL
 	// ALUMNO: FUNES MATIAS
 
-	public long traerCantidadVendidaDePlatoEnFestival(long idFestival, long idPlato) throws Exception {
+	public long traerCantidadVendidaDePlatoEnFestival(Festival festival, Plato plato) throws Exception {
 
-		//VALIDO ID FESTIVAL > 0
-	    if (idFestival <= 0) {
-	        throw new Exception(
-	                "ERROR: El ID del festival debe ser mayor a cero");
-	    }
-	    
-	  //VALIDO ID PLATO > 0
-	    if (idPlato <= 0) {
-	        throw new Exception(
-	                "ERROR: El ID del plato debe ser mayor a cero");
-	    }
-
-	    Festival festival =
-	            FestivalABM.getInstance().traer(idFestival);
-
-	    //VALIDO QUE FESTIVAL EXISTA
+		 // Valido que el festival exista
 	    if (festival == null) {
-	        throw new Exception(
-	                "ERROR: No existe el festival con ID: "
-	                + idFestival);
+	        throw new Exception("ERROR: El festival no puede ser nulo");
 	    }
 
-	    Plato plato =
-	            PlatoABM.getInstance().traer(idPlato);
-
-	    //VALIDO QUE EXISTA PLATO
+	    // Valido que el plato exista
 	    if (plato == null) {
-	        throw new Exception(
-	                "ERROR: No existe el plato con ID: "
-	                + idPlato);
+	        throw new Exception("ERROR: El plato no puede ser nulo");
 	    }
 
 	    return PedidoDao.getInstance()
 	            .traerCantidadVendidaDePlatoEnFestival(
-	                    idFestival,
-	                    idPlato);
+	                    festival,
+	                    plato);
 	}
 	
 }

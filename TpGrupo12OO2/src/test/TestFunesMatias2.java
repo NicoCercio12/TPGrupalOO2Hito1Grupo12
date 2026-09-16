@@ -11,50 +11,36 @@ public class TestFunesMatias2 {
     public static void main(String[] args) {
 
         long idFestival = 1;
-        long idPlato = 2;
+        long idPlato = 1;
 
         try {
 
-            Festival festival =
-                    FestivalABM.getInstance().traer(idFestival);
+            Festival festival = FestivalABM.getInstance().traer(idFestival);
 
-            Plato plato =
-                    PlatoABM.getInstance().traer(idPlato);
+            Plato plato = PlatoABM.getInstance().traer(idPlato);
 
-            long cantidad =
-                    PedidoABM.getInstance()
-                            .traerCantidadVendidaDePlatoEnFestival(
-                                    idFestival,
-                                    idPlato);
+            long cantidad = PedidoABM.getInstance().traerCantidadVendidaDePlatoEnFestival(festival, plato);
 
             System.out.println();
-            System.out.println(
-                    "==============================================");
+            System.out.println("==============================================");
 
-            System.out.println(
-                    "   CANTIDAD VENDIDA DE PLATO EN FESTIVAL");
+            System.out.println("   CANTIDAD VENDIDA DE PLATO EN FESTIVAL");
 
-            System.out.println(
-                    "==============================================");
+            System.out.println("==============================================");
 
-            System.out.println(
-                    "Festival: " + festival.getNombre());
+            System.out.println("Festival: " + festival.getNombre());
 
-            System.out.println(
-                    "Plato: " + plato.getNombre());
+            System.out.println("Plato: " + plato.getNombre());
 
             System.out.println();
 
-            System.out.println(
-                    "Cantidad vendida: " + cantidad);
+            System.out.println("Cantidad vendida: " + cantidad);
 
-            System.out.println(
-                    "==============================================");
+            System.out.println("==============================================");
 
         } catch (Exception e) {
 
-            System.err.println(
-                    "ERROR AL REALIZAR LA CONSULTA:");
+            System.err.println("ERROR AL REALIZAR LA CONSULTA:");
 
             System.err.println(e.getMessage());
         }
