@@ -1,9 +1,12 @@
 package dao;
 import java.util.List; 
+import java.time.LocalDate;
+import datos.UnidadDeVenta;
 import org.hibernate.HibernateException; 
 import org.hibernate.Session; 
 import org.hibernate.Transaction;
 import datos.Plato;
+import datos.Festival;
 
 public class PlatoDao {
 
@@ -171,7 +174,7 @@ public class PlatoDao {
 		}
 		
 		// Traer el plato más vendido de una Unidad de Venta
-		public Plato traerMasVendidoPorUnidad(long idUnidad) { //por unidad y rango de fechas o por festival
+		public Plato traerMasVendidoPorUnidad(UnidadDeVenta unidad, LocalDate fechaInicio, LocalDate fechaFin) {
 
 		    Plato plato = null;
 
@@ -182,10 +185,13 @@ public class PlatoDao {
 		        plato = (Plato) session.createQuery(
 		                "select i.plato " +
 		                "from Pedido p join p.items i " +
-		                "where p.unidadDeVenta.idUnidad = :idUnidad " +
+		                "where p.unidadDeVenta = :unidad " +
+		                "and p.fecha between :fechaInicio and :fechaFin " +
 		                "group by i.plato " +
 		                "order by sum(i.cantidad) desc")
-		                .setParameter("idUnidad", idUnidad)
+		                .setParameter("unidad", unidad)
+		                .setParameter("fechaInicio", fechaInicio)
+		                .setParameter("fechaFin", fechaFin)
 		                .setMaxResults(1)
 		                .uniqueResult();
 
@@ -195,9 +201,45 @@ public class PlatoDao {
 
 		    } finally {
 
-		        session.close();
+		        if (session != null && session.isOpen()) {
+		            session.close();
+		        }
 		    }
 
 		    return plato;
 		}
+		
+		
+		public Plato traerMasRentablePorFestival(Festival festival) {
+
+		    Plato plato = null;
+
+		    try {
+
+		        iniciaOperacion();
+
+		        plato = (Plato) session.createQuery(
+		                "select i.plato " +
+		                "from Pedido p join p.items i " +
+		                "where p.festival = :festival " +
+		                "group by i.plato " +
+		                "order by sum((i.plato.precioVenta - i.plato.costoProduccion) * i.cantidad) desc")
+		                .setParameter("festival", festival)
+		                .setMaxResults(1)
+		                .uniqueResult();
+
+		    } catch (HibernateException he) {
+
+		        manejaExcepcion(he);
+
+		    } finally {
+
+		        if (session != null && session.isOpen()) {
+		            session.close();
+		        }
+		    }
+
+		    return plato;
+		}
+		
 }
