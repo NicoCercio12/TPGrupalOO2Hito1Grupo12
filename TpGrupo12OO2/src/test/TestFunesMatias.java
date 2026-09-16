@@ -10,9 +10,9 @@ public class TestFunesMatias {
 	public static void main(String[] args) {
 		long idFestival = 1;
 
-        LocalDate fechaInicio = LocalDate.of(2026, 9, 9);
+        LocalDate fechaInicio = LocalDate.of(2026, 1, 10);
 
-        LocalDate fechaFin = LocalDate.of(2026, 9, 20);
+        LocalDate fechaFin = LocalDate.of(2026, 1, 20);
 
         try {
 
