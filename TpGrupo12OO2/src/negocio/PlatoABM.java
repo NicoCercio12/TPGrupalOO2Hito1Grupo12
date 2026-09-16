@@ -1,8 +1,12 @@
 package negocio;
 
 import java.util.List;
+
+import java.time.LocalDate;
+import datos.UnidadDeVenta;
 import dao.PlatoDao;
 import datos.Plato;
+import datos.Festival;
 
 public class PlatoABM {
 
@@ -49,7 +53,28 @@ public class PlatoABM {
     }
     
  // Traer el plato más vendido de una Unidad de Venta
-    public Plato traerMasVendidoPorUnidad(long idUnidad) throws Exception {
-        return PlatoDao.getInstance().traerMasVendidoPorUnidad(idUnidad);
+    public Plato traerMasVendidoPorUnidad(UnidadDeVenta unidad, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
+    	
+    	if (unidad == null) {
+    	    throw new Exception("La unidad no puede ser nula");
+    	}
+    	
+    	if (fechaInicio == null || fechaFin == null) {
+    	    throw new Exception("Las fechas no pueden ser nulas");
+    	}
+
+    	if (fechaInicio.isAfter(fechaFin)) {
+    	    throw new Exception("La fecha de inicio no puede ser posterior a la fecha de fin");
+    	}
+        return PlatoDao.getInstance().traerMasVendidoPorUnidad(unidad, fechaInicio, fechaFin );
+    }
+    
+    public Plato traerMasRentablePorFestival(Festival festival) throws Exception{
+    	
+    	if (festival == null) {
+    	    throw new Exception("El festival no puede ser nulo");
+    	}
+
+        return PlatoDao.getInstance().traerMasRentablePorFestival(festival);
     }
 }
